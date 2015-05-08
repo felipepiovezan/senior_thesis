@@ -1,23 +1,53 @@
 \documentclass{ufscThesis}
-\newcommand{\ABNTbibliographyname}{REFERÃŠNCIAS} % NecessÃ¡rio para abnTeX 0.8.2
 
-\instituicao[a]{Universidade Federal de Santa Catarina}
-\departamento[a]{Departamento de InformÃ¡tica e EstatÃ­stica}
-\curso[o]{Curso de Bacharelado em CiÃªncia da ComputaÃ§Ã£o}
-\titulo{AnÃ¡lise da eficiÃªncia energÃ©tica de algoritmos de criptografia baseados em curvas elÃ­pticas}
+\usepackage{graphicx} % Possibilita o uso de figuras e gráficos
+\usepackage{epsfig}
+\usepackage{color, colortbl}    % Possibilita o uso de cores no documento
+\usepackage{multirow, amsmath}
+\usepackage{clrscode3e}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{caption, float}
+\usepackage[export]{adjustbox}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+
+
+%----------------------------------------------------------------------
+% Comandos criados pelo usuário
+\newcommand{\afazer}[1]{{\color{red}{#1}}} % Para destacar uma parte a ser trabalhada\
+\newcommand{\ingles}[1]{\emph{#1}}
+\newcommand{\keyword}[1]{\emph{#1}}
+\newtheorem{definicao}{Definição}
+\newtheorem{teorema}{Teorema}
+
+%----------------------------------------------------------------------
+% Identificadores do trabalho
+% Usados para preencher os elementos pré-textuais
+\instituicao[a]{Universidade Federal de Santa Catarina} % Opcional
+\departamento[a]{Departamento de Informática e Estatística}
+\curso[o]{Curso de Bacharelado em Ciência da Computação}
+%\documento[o]{TCC} % Opcional (Tese é o padrão)
+\titulo{Análise da eficiência energética de algoritmos de criptografia baseados em curvas elípticas}
+%\subtitulo{} % Opcional
 \autor{Felipe de Azevedo Piovezan}
-\grau{Bacharel em CiÃªncia da ComputaÃ§Ã£o}
-\local{FlorianÃ³polis - Santa Catarina}
+\grau{Bacharel em Ciência da Computação}
+\local{Florianópolis - Santa Catarina} % Opcional (Florianópolis é o padrão)
 \data{02}{Dezembro}{2015}
-\orientador[Orientador]{Prof. Dr. Luiz ClÃ¡udio Villar dos Santos}
+\orientador[Orientador]{Prof. Dr. Luiz Cláudio Villar dos Santos}
 \coorientador[Coorientador]{Prof. Dr. Daniel Santana de Freitas}
 \coordenador[Coordenador]{Prof. Dr. Renato Cislaghi}
 
-\numerodemembrosnabanca{5} % Isso decide se haverÃ¡ uma folha adicional
+\numerodemembrosnabanca{5} % Isso decide se haverá uma folha adicional
 \orientadornabanca{sim} % Se faz parte da banca definir como sim
 \coorientadornabanca{sim} % Se faz parte da banca definir como sim
-%\bancaMembroA{Prof. Dr. Luiz ClÃ¡udio Villar dos Santos} %Nome do presidente da banca
-\bancaMembroB{Prof. Dr. JosÃ© LuÃ­s Almada GÃ¼ntzel}      % Nome do membro da Banca
+%\bancaMembroA{Prof. Dr. Luiz Cláudio Villar dos Santos} %Nome do presidente da banca
+\bancaMembroB{Prof. Dr. José Luís Almada Güntzel}      % Nome do membro da Banca
+%\bancaMembroC{Prof. Dr. Daniel Santana de Freitas}     % Nome do membro da Banca
+%\bancaMembroD{Quarto membro}       % Nome do membro da Banca
+%\bancaMembroE{Prof. quinto membro}       % Nome do membro da Banca
+%\bancaMembroF{Prof. sexto membro}        % Nome do membro da Banca
+%\bancaMembroG{Prof. sétimo membro}       % Nome do membro da Banca
 
 \agradecimento{
 Um agradecimento
@@ -27,21 +57,26 @@ Um agradecimento
 {The Raven}
 
 \textoResumo {
-Texto Resumo
+	A criptografia de chaves públicas (PKC), ou criptografia assimétrica, uma das bases para a comunicação segura pela internet, fornece as primitivas para a troca de chaves, autenticação de usuários e assinatura digital. A maioria dos algoritmos de PKC usados atualmente são baseados em conjecturas de teoria dos números, como a dificuldade da fatoração de inteiros ou a dificuldade de alguma versão do logaritmo discreto. Este último, quando usado na versão de curvas elípticas, permite o uso de chaves e assinaturas menores para o mesmo nível de segurança de outros algoritmos, o que é interessante em ambientes com recursos limitados.
+
+	Durante o desenvolvimento dos algoritmos assimétricos, os principais nodos da rede eram grandes servidores e desktops. Recentemente, porém, a escala dos dispositivos que estabelecem comunicação segura pela internet está diminuindo consistentemente: dos laptops e celulares, até sensores e etiquetas RFID, todos necessitam de um canal seguro. Essa miniaturização, no entanto, veio acompanhada de restrições de processamento e de suprimento energético, o que conflita com o fato que algoritmos de PKC são computacionalmente caros: como, então, utilizá-los em ambientes com recursos limitados? O presente trabalho pretende, a partir de simulações, avaliar o gasto energético do sistema de memórias de processadores executando algoritmos de criptografia de curvas elípticas, bem como o impacto que técnicas de otimização têm na eficiência energética.
 }
+
 \palavrasChave {Palavras chave}
 
 \textAbstract {
-text abstract
+	The realm of public-key (asymmetric) cryptography (PKC) is considered to be one the pillars of secure communication over the internet, since it includes user authentication, key enchange and digital signatures. PKC algorithms in use are mostly based in certain number-theoretic conjectures, like the difficulty of integer factorization or the difficulty of some discrete-log problem. The latter, when used in the elliptic curve setting, allows for shorter keys and signatures while maintaining the same security level of other algorithms, which is interesting in a resource constrained environment.
+	
+	During the development of the first asymmetric algorithms, most nodes in a network were either desktops or servers. Recently, however, the scale of the devices partaking in secure communations over the internet has been steadily decreasing: from laptops and cellphones to sensors and RFID tags, they all require a secure channel. This miniaturization is responsible for new restrictions on the processing power and battery supply available to each node, which directly conflicts with the fact that PKC algorithms are computationally expensive. What then is the best way to employ those algorithms in such restricted devices? Through the use of simulations, this work will evalute the energy cost of the memory system of processors executing elliptic curve algorithms, as well as the impact that certain optimzation techniques have on energy efficiency. 
 }
 \keywords {keywords}
 
 \begin{document}
 
 %--------------------------------------------------------
-% Elementos prÃ©-textuais
+% Elementos pré-textuais
 %\capa  
-\folhaderosto[comficha] % Se nao quiser imprimir a ficha, Ã© sÃ³ nÃ£o usar o parÃ¢metro
+\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só não usar o parâmetro
 \folhaaprovacao
 \paginadedicatoria
 \paginaagradecimento
@@ -49,7 +84,7 @@ text abstract
 \paginaresumo
 \paginaabstract
 %\pretextuais % Substitui todos os elementos pre-textuais acima
-\listadefiguras % as listas dependem da necessidade do usuÃ¡rio
+\listadefiguras % as listas dependem da necessidade do usuário
 \listadetabelas 
 \listadeabreviaturas
 \listadesimbolos
@@ -57,7 +92,48 @@ text abstract
 %--------------------------------------------------------
 % Elementos textuais
 
-\chapter{IntroduÃ§Ã£o}
+\chapter{Introdução}
 Introducao!
+
+\chapter{Conceitos Básicos em Criptografia}
+A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando pelas definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. Por fim, discute-se métodos utilizados para troca de chaves em criptografia assimétrica. O material aqui apresentado é baseado principalmente no trabalho de Goldreich e nas notas de aula do professor Charles Rackoff. Apresentaremos os conceitos mais importantes para o entendimento do ambiente em que algoritmos de curvas elípticas são utilizados, cientes de que uma abordagem completa estaria fora do escopo deste trabalho. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas anteriormente.
+
+\section{Sessões seguras}
+
+A  aplicação mais tradicional de criptografia, aquela descrita por um usuário comum de informática, encontra-se no estabelecimento de \keyword{sessões seguras} (\ingles{secure sessions}). Isto é, duas pessoas, $A$ e $B$, tendo um segredo em comum (daqui em diante chamado de \keyword{chave}), gostariam de se comunicar através de um canal potencialmente inseguro. Com alguma frequência, $A$ gostaria de mandar algo\footnote{Tratamos de comunicação unidirecional aqui por simplicidade, todos os conceitos podem ser expandidos para um canal bidirecional.} (\keyword{texto em claro}, \ingles{plaintext}) para $B$, denotar-se-á por \keyword{mensagem} tudo aquilo que $A$ gostaria de enviar para $B$, embora $A$ esteja restrito a enviar uma fração de tal mensagem por vez. Considera-se também a existência de um adversário $ADV$ computacionalmente irrestrito, limitado a ouvir tudo que $A$ envia pelo canal. Informalmente, $A$ gostaria de "cifrar" a mensagem de modo que $ADV$ não possa descobrir nenhuma informação sobre a mesma.
+
+Tal cenário motiva a primeira definição aqui apresentada:
+
+\begin{definicao}
+Diremos que uma chave é um $K \in \{0,1\}^n$, onde $K = K_1K_2...K_n$, e uma mensagem é um $M \in \{0,1\}^m$, onde $M = M_1M_2...M_m$.
+
+Uma {\ingles{encryption function} é uma função \[Enc: \{0,1\}^m \times \{0,1\}^n \to \{0,1\}^*\]
+
+Uma {\ingles{decryption function} é uma função \[Dec: \{0,1\}^* \times \{0,1\}^n \to \{0,1\}^m\]
+
+Requer-se do par $(Enc, Dec)$ a seguinte \keywork{condição de corretude} \[\forall M \in \{0,1\}^m,  \forall K \in \{0,1\}^n Dec(Enc(M, K), K) = M\]
+\end{definicao}
+
+Informalmente, $Enc(M,K)$ é entendido como  a mensagem $M$ cifrada que $A$ envia a $B$, o qual aplica $Dec$ para retornar ao texto em claro. É importante insistir na condição de corretude, uma vez que ela garante que qualquer mensagem cifrada por $Enc$ será corretamente produzida por $Dec$, desde que a mesma chave seja usada em ambas as funções\footnote{Geralmente nos referimos ao par $(Enc, Dec)$ quando queremos discutir alguma propriedade criptográfica, visto que as duas funções geralmente estão relacionadas para conferir corretude. É um exercício interessante pensar como seria fácil obter segurança sem o requerimento de corretude.}.
+
+Podemos agora descrever o que seria uma função segura. Existem diversas definições provadamente equivalentes na literatura, por simplicidade a definição seguinte é adotada neste trabalho:
+
+\begin{definicao}
+O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se para toda $f:\{0,1\}^* \to \{0,1\}^m$ a seguinte proposição é válida:
+
+Considere o experimento em que $M$ é escolhida de modo aleatório de $\{0,1\}^m$ e $K$ é escolhida de modo aleatório de $\{0,1\}^n$. Então $P[f(Enc(M,K)) = M] = 1/2^m$
+\end{definicao}
+
+Isto é, um adversário vendo a mensagem cifrada não consegue adivinhar o valor de $M$ com probabilidade maior do que se ele simplesmente escolhesse uma mensagem arbitrária. Note que o fato do adversário estar ilimitado computacionalmente é representado pelo fato de que ele é modelado como uma função arbitrária na definição.
+ 
+No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$ perfeitamente seguro: as funções $Enc(M,K) = M_1 \oplus K_1 M_2 \oplus K_2 ... M_m \oplus K_m$ e $Dec(X,K) = X_1 \oplus K_1 X_2 \oplus K_2 ... X_m \oplus K_m$ satisfazem a definição\footnote{Tal função é conhecida como \ingles{one-time pad} na literatura.}. Na prática, porém, essa definição não é muito interessante, visto que gostaríamos de trabalhar com chaves pequenas (algumas centenas de bits) e mensagens de tamanho arbitrário\footnote{Embora o termo arbitrário seja utilizado, na prática espera-se que esse número seja muito inferior a 2^n}. Essa necessidade entra diretamente em conflito com o seguinte teorema:
+
+\begin{teorema}
+Se $m > n$ então nenhum $(Enc, Dec)$ é perfeitamente seguro.
+\end{teorema}
+
+A prova, embora simples, é omitida por clareza.
+
+Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial em relação a $n$.
 
 \end{document}
