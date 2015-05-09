@@ -113,22 +113,22 @@ Uma {\ingles{encryption function} é uma função \[Enc: \{0,1\}^m \times \{0,1\}^n
 
 Uma {\ingles{decryption function} é uma função \[Dec: \{0,1\}^* \times \{0,1\}^n \to \{0,1\}^m\]
 
-Requer-se do par $(Enc, Dec)$ a seguinte \keywork{condição de corretude} \[\forall M \in \{0,1\}^m,  \forall K \in \{0,1\}^n Dec(Enc(M, K), K) = M\]
+Requer-se do par $(Enc, Dec)$ a seguinte \keyword{condição de corretude}: \[\forall M \in \{0,1\}^m,  \forall K \in \{0,1\}^n Dec(Enc(M, K), K) = M\]
 \end{definicao}
 
-Informalmente, $Enc(M,K)$ é entendido como  a mensagem $M$ cifrada que $A$ envia a $B$, o qual aplica $Dec$ para retornar ao texto em claro. É importante insistir na condição de corretude, uma vez que ela garante que qualquer mensagem cifrada por $Enc$ será corretamente produzida por $Dec$, desde que a mesma chave seja usada em ambas as funções\footnote{Geralmente nos referimos ao par $(Enc, Dec)$ quando queremos discutir alguma propriedade criptográfica, visto que as duas funções geralmente estão relacionadas para conferir corretude. É um exercício interessante pensar como seria fácil obter segurança sem o requerimento de corretude.}.
+Informalmente, $Enc(M,K)$ é entendido como  a mensagem $M$ cifrada que $A$ envia a $B$, o qual aplica $Dec$ para retornar ao texto em claro. É importante insistir na condição de corretude, uma vez que ela garante que qualquer mensagem cifrada por $Enc$ será corretamente produzida por $Dec$, desde que a mesma chave seja usada em ambas as funções\footnote{É comum nos referimos ao par $(Enc, Dec)$ quando queremos discutir alguma propriedade criptográfica, visto que as duas funções geralmente estão relacionadas para conferir corretude. É um exercício interessante pensar como seria fácil obter segurança sem o requerimento de corretude.}.
 
 Podemos agora descrever o que seria uma função segura. Existem diversas definições provadamente equivalentes na literatura, por simplicidade a definição seguinte é adotada neste trabalho:
 
 \begin{definicao}
 O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se para toda $f:\{0,1\}^* \to \{0,1\}^m$ a seguinte proposição é válida:
 
-Considere o experimento em que $M$ é escolhida de modo aleatório de $\{0,1\}^m$ e $K$ é escolhida de modo aleatório de $\{0,1\}^n$. Então $P[f(Enc(M,K)) = M] = 1/2^m$
+Considere o experimento em que $M$ é escolhida de modo aleatório de $\{0,1\}^m$ e $K$ é escolhida de modo aleatório de $\{0,1\}^n$. Então deve ser  verdade que: \[P[f(Enc(M,K)) = M] = 1/2^m\]
 \end{definicao}
 
 Isto é, um adversário vendo a mensagem cifrada não consegue adivinhar o valor de $M$ com probabilidade maior do que se ele simplesmente escolhesse uma mensagem arbitrária. Note que o fato do adversário estar ilimitado computacionalmente é representado pelo fato de que ele é modelado como uma função arbitrária na definição.
  
-No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$ perfeitamente seguro: as funções $Enc(M,K) = M_1 \oplus K_1 M_2 \oplus K_2 ... M_m \oplus K_m$ e $Dec(X,K) = X_1 \oplus K_1 X_2 \oplus K_2 ... X_m \oplus K_m$ satisfazem a definição\footnote{Tal função é conhecida como \ingles{one-time pad} na literatura.}. Na prática, porém, essa definição não é muito interessante, visto que gostaríamos de trabalhar com chaves pequenas (algumas centenas de bits) e mensagens de tamanho arbitrário\footnote{Embora o termo arbitrário seja utilizado, na prática espera-se que esse número seja muito inferior a 2^n}. Essa necessidade entra diretamente em conflito com o seguinte teorema:
+No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$ perfeitamente seguro: as funções $Enc(M,K) = M_1 \oplus K_1 M_2 \oplus K_2 ... M_m \oplus K_m$ e $Dec(X,K) = X_1 \oplus K_1 X_2 \oplus K_2 ... X_m \oplus K_m$ satisfazem a definição\footnote{Tal função é conhecida como \ingles{one-time pad} na literatura.}. Na prática, porém, essa definição não é muito interessante, visto que gostaríamos de trabalhar com chaves pequenas (algumas centenas de bits) e mensagens de tamanho arbitrário\footnote{Embora o termo arbitrário seja utilizado, na prática espera-se que esse número seja muito inferior a $2^n$}. Essa necessidade entra diretamente em conflito com o seguinte teorema:
 
 \begin{teorema}
 Se $m > n$ então nenhum $(Enc, Dec)$ é perfeitamente seguro.
@@ -140,14 +140,34 @@ A prova, embora simples, é omitida por clareza. Para contornar esse teorema pode
 Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada $n\in\mathbb{N}$ e a cada $k \in \{0,1\}^n$ uma função $F_k: \{0,1\}^n \to \{0,1\}^n$ de modo que exista um algoritmo com tempo de execução polynomial (em $n$) o qual compute $F_k(x)$.
 \end{definicao}
 
-Nós iremos exigir que tais geradores de função sejam \keyword{pseudo-aleatórios}, informalmente isso quer dizer que um adversário não consegue distinguir entre um $F_k$ e uma função escolhida aleatoriamente $f:\{0,1\}^n \to \{0,1\}^n$ com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
+Nós iremos exigir que tais geradores de função sejam \keyword{pseudo-aleatórios}, isto é, um adversário não consegue distinguir entre um $F_k$ e uma função escolhida aleatoriamente $f:\{0,1\}^n \to \{0,1\}^n$ com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
 
-Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual nós falamos que \emph{assumimos} que geradores de função pseudo-aleatórios existem é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso.
+Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existem é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso.
 
 
 \section{Criptografia de Chaves Públicas}
 Até esse momento, assumimos que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar mensagens em um canal inseguro e, ao final da comunicação, ambas possuam uma mesma chave desconhecida a qualquer adversário manipulando o canal?
 
-Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na versão de curvas elípticas do problema, o assunto da presente seção.
+Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção.
+
+\begin{definicao}
+	Uma curva elíptica $E$ sobre o corpo finito $GF(p)$, onde $p$ é um número primo ímpar, é o conjunto: \[ E = \{ (x,y) \quad | \quad y^2 = x^3 + ax + b \quad\wedge\quad x, y, a, b \in GF(p)$ \quad\wedge\quad 4a^3 + 27b^2 != 0\; (mod \;p) \} \cup \{ O\}\] 
+	
+	onde $a$ e $b$ são constantes relacionadas a curva e $O$ é chamado de ponto no infinito.
+\end{definicao}
+
+\begin{definicao}
+	Uma curva elíptica $E$ sobre o corpo finito $GF(2^m)$, é o conjunto: \[ E = \{ (x,y) \quad | \quad y^2 + xy = x^3 + ax^2 + b \quad\wedge\quad x, y, a, b \in GF(2^m)$ \quad\wedge\quad b != 0\} \cup \{ O\}\] 
+
+	onde $a$ e $b$ são constantes relacionadas a curva e $O$ é chamado de ponto no infinito.
+\end{definicao}
+
+\begin{definicao}
+	O número de elementos de uma curva $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $#E(GF(q))$.
+\end{definicao}
+
+Para ilustrar as definições, considere a curva $E$ dada por \[y^2 = x^3 + x + 5\] sobre $GF(13)$. Os pontos de $E$ são:
+\[ \{O, (1,4), (1,9), (3,6), (3,7), (8,5), (8,8), (10,0), (11,4), (11,9) \} \]
+e $\#E(GF(13)) = 10$.
 
 \end{document}
