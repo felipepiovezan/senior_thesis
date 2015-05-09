@@ -11,6 +11,8 @@
 \usepackage{pdfpages}
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{amssymb}.
+
 
 
 %----------------------------------------------------------------------
@@ -132,8 +134,20 @@ No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$
 Se $m > n$ então nenhum $(Enc, Dec)$ é perfeitamente seguro.
 \end{teorema}
 
-A prova, embora simples, é omitida por clareza.
+A prova, embora simples, é omitida por clareza. Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$) e definiremos uma classe de funções com a qual trabalharemos.
 
-Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial em relação a $n$.
+\begin{definicao}
+Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada $n\in\mathbb{N}$ e a cada $k \in \{0,1\}^n$ uma função $F_k: \{0,1\}^n \to \{0,1\}^n$ de modo que exista um algoritmo com tempo de execução polynomial (em $n$) o qual compute $F_k(x)$.
+\end{definicao}
+
+Nós iremos exigir que tais geradores de função sejam \keyword{pseudo-aleatórios}, informalmente isso quer dizer que um adversário não consegue distinguir entre um $F_k$ e uma função escolhida aleatoriamente $f:\{0,1\}^n \to \{0,1\}^n$ com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
+
+Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual nós falamos que \emph{assumimos} que geradores de função pseudo-aleatórios existem é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso.
+
+
+\section{Criptografia de Chaves Públicas}
+Até esse momento, assumimos que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar mensagens em um canal inseguro e, ao final da comunicação, ambas possuam uma mesma chave desconhecida a qualquer adversário manipulando o canal?
+
+Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na versão de curvas elípticas do problema, o assunto da presente seção.
 
 \end{document}
