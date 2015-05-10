@@ -13,4 +13,4 @@ $(TARGET).pdf: $(TARGET).tex
 
 clean:
 	rm -f *.toc *.lof *.lot *.bbl *.blg *.log *.aux *.las *.lsb
-	rm -f $(TARGET).pdf
+#	rm -f $(TARGET).pdf

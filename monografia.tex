@@ -121,7 +121,7 @@ Informalmente, $Enc(M,K)$ é entendido como  a mensagem $M$ cifrada que $A$ envia
 Podemos agora descrever o que seria uma função segura. Existem diversas definições provadamente equivalentes na literatura, por simplicidade a definição seguinte é adotada neste trabalho:
 
 \begin{definicao}
-O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se para toda $f:\{0,1\}^* \to \{0,1\}^m$ a seguinte proposição é válida:
+O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se, para toda $f:\{0,1\}^* \to \{0,1\}^m$, a seguinte proposição é válida:
 
 Considere o experimento em que $M$ é escolhida de modo aleatório de $\{0,1\}^m$ e $K$ é escolhida de modo aleatório de $\{0,1\}^n$. Então deve ser  verdade que: \[P[f(Enc(M,K)) = M] = 1/2^m\]
 \end{definicao}
@@ -163,11 +163,31 @@ Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria 
 \end{definicao}
 
 \begin{definicao}
-	O número de elementos de uma curva $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $#E(GF(q))$.
+	O número de elementos de uma curva $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $\#E(GF(q))$.
 \end{definicao}
 
 Para ilustrar as definições, considere a curva $E$ dada por \[y^2 = x^3 + x + 5\] sobre $GF(13)$. Os pontos de $E$ são:
 \[ \{O, (1,4), (1,9), (3,6), (3,7), (8,5), (8,8), (10,0), (11,4), (11,9) \} \]
 e $\#E(GF(13)) = 10$.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.50]{images/ecc_example_overGF.png}
+\caption{Exemplo de uma curva elíptica sobre $GF(13)$}
+\label{fig:ecc_example_overGF}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.50]{images/ecc_example_overR.png}
+\caption{Exemplo de uma curva elíptica sobre $\mathBB{R}$}
+\label{fig:ecc_example_overR}
+\end{center}
+\end{figure}
+
+A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura \ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
+%Dá uma olhada na matplotlib   /numpy
 
 \end{document}
