@@ -17,6 +17,7 @@
 
 %----------------------------------------------------------------------
 % Comandos criados pelo usuário
+\newcommand{\ABNTbibliographyname}{REFERÊNCIAS}
 \newcommand{\afazer}[1]{{\color{red}{#1}}} % Para destacar uma parte a ser trabalhada
 \newcommand{\ingles}[1]{\emph{#1}}
 \newcommand{\keyword}[1]{\emph{#1}}
@@ -199,6 +200,42 @@ e $\#E(GF(13)) = 10$.
 A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura \ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
 %Dá uma olhada na matplotlib   /numpy
 
+    \begin{codebox}
+		\label{alg:sum_over_ECC}
+    \Procname{$\proc{Soma}(P_1, P_2)$}
+    \li \If $P_1 = O$ 
+	\Do
+		\li output $P_2$ and stop. 
+	\End
+	\li \If $P_2 = O$ 
+	\Do
+		\li output $P_1$ and stop. 
+	\End
+	\li Set $x_1 \gets P_1.x$
+	\li Set $y_1 \gets P_1.y$
+	\li Set $x_2 \gets P_2.x$
+	\li Set $y_2 \gets P_2.y$
+	\li \If $x_1 \not= x_2$ 
+	\Do	
+		\li Set $\lambda \gets (y_1 - y_2)/(x_1 - x_2)$
+	\li \Else
+		\li \If $y_1 \not= y_2$ or $y_2 = 0$
+		\Do
+			\li Output $O$ and stop.
+		\End
+		\li Set $\lambda \gets (3{x_2}^2 + a)/(2y_2)$
+	\End
+	\li Set $x_3 \gets \lambda^2 - x_1 - x_2 \quad mod\; p$
+	\li Set $y_3 \gets (x_2 - x_3)\lambda - y_1 \quad mod\; p$
+	\li output $(x_3, y_3)$
+    \end{codebox}
 
+
+	Uma operação de soma pode ser definida sobre uma curva elíptica de modo a torná-la um grupo e, assim, poderemos definir o problema do logaritmo discreto sobre esse conjunto. Por clareza, definimos a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme \cite{IEE1363}.
+
+
+
+\bibliographystyle{ufscThesis/ufsc-alf}
+\bibliography{bibliografia}
 
 \end{document}
