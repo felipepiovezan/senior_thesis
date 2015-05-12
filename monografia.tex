@@ -11,13 +11,13 @@
 \usepackage{pdfpages}
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{amssymb}.
+\usepackage{amssymb}
 
 
 
 %----------------------------------------------------------------------
 % Comandos criados pelo usuário
-\newcommand{\afazer}[1]{{\color{red}{#1}}} % Para destacar uma parte a ser trabalhada\
+\newcommand{\afazer}[1]{{\color{red}{#1}}} % Para destacar uma parte a ser trabalhada
 \newcommand{\ingles}[1]{\emph{#1}}
 \newcommand{\keyword}[1]{\emph{#1}}
 \newtheorem{definicao}{Definição}
@@ -55,7 +55,7 @@
 Um agradecimento
 }
 
-\epigrafe{Nevermore}
+\epigrafe{"Nevermore"}
 {The Raven}
 
 \textoResumo {
@@ -78,7 +78,7 @@ Um agradecimento
 %--------------------------------------------------------
 % Elementos pré-textuais
 %\capa  
-\folhaderosto[comficha] % Se nao quiser imprimir a ficha, é só não usar o parâmetro
+\folhaderosto[comficha]
 \folhaaprovacao
 \paginadedicatoria
 \paginaagradecimento
@@ -109,9 +109,9 @@ Tal cenário motiva a primeira definição aqui apresentada:
 \begin{definicao}
 Diremos que uma chave é um $K \in \{0,1\}^n$, onde $K = K_1K_2...K_n$, e uma mensagem é um $M \in \{0,1\}^m$, onde $M = M_1M_2...M_m$.
 
-Uma {\ingles{encryption function} é uma função \[Enc: \{0,1\}^m \times \{0,1\}^n \to \{0,1\}^*\]
+Uma \ingles{encryption function} é uma função \[Enc: \{0,1\}^m \times \{0,1\}^n \to \{0,1\}^*\]
 
-Uma {\ingles{decryption function} é uma função \[Dec: \{0,1\}^* \times \{0,1\}^n \to \{0,1\}^m\]
+Uma \ingles{decryption function} é uma função \[Dec: \{0,1\}^* \times \{0,1\}^n \to \{0,1\}^m\]
 
 Requer-se do par $(Enc, Dec)$ a seguinte \keyword{condição de corretude}: \[\forall M \in \{0,1\}^m,  \forall K \in \{0,1\}^n Dec(Enc(M, K), K) = M\]
 \end{definicao}
@@ -146,24 +146,33 @@ Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções
 
 
 \section{Criptografia de Chaves Públicas}
-Até esse momento, assumimos que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar mensagens em um canal inseguro e, ao final da comunicação, ambas possuam uma mesma chave desconhecida a qualquer adversário manipulando o canal?
+Até esse momento, assumimos que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar alguns poucos parâmetros através de um canal inseguro e, ao final da comunicação, ambas possuam uma mesma chave desconhecida a qualquer adversário manipulando o canal?
 
 Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção.
 
 \begin{definicao}
-	Uma curva elíptica $E$ sobre o corpo finito $GF(p)$, onde $p$ é um número primo ímpar, é o conjunto: \[ E = \{ (x,y) \quad | \quad y^2 = x^3 + ax + b \quad\wedge\quad x, y, a, b \in GF(p)$ \quad\wedge\quad 4a^3 + 27b^2 != 0\; (mod \;p) \} \cup \{ O\}\] 
+Uma curva elíptica $E$ sobre o corpo finito $GF(p)$, onde $p$ é um número primo ímpar, é o conjunto: 
+\begin{align*} 
+	E = \{ (x,y) \quad | \quad &y^2 = x^3 + ax + b \\
+							   &\wedge\quad x, y, a, b \in GF(p) \\
+							   &\wedge\quad 4a^3 + 27b^2 \not= 0\; (mod \;p) \} \cup \{ O\}
+\end{align*}
 	
 	onde $a$ e $b$ são constantes relacionadas a curva e $O$ é chamado de ponto no infinito.
 \end{definicao}
 
 \begin{definicao}
-	Uma curva elíptica $E$ sobre o corpo finito $GF(2^m)$, é o conjunto: \[ E = \{ (x,y) \quad | \quad y^2 + xy = x^3 + ax^2 + b \quad\wedge\quad x, y, a, b \in GF(2^m)$ \quad\wedge\quad b != 0\} \cup \{ O\}\] 
+Uma curva elíptica $E$ sobre o corpo finito $GF(2^m)$, é o conjunto: 
+\begin{align*} 
+	E = \{ (x,y) \quad | \quad &y^2 + xy = x^3 + ax^2 + b \\ 
+							   &\wedge\quad x, y, a, b \in GF(2^m) \quad\wedge\quad b \not= 0\} \cup \{ O\}
+\end{align*}
 
 	onde $a$ e $b$ são constantes relacionadas a curva e $O$ é chamado de ponto no infinito.
 \end{definicao}
 
 \begin{definicao}
-	O número de elementos de uma curva $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $\#E(GF(q))$.
+	O número de elementos de uma curva elíptica $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $\#E(GF(q))$.
 \end{definicao}
 
 Para ilustrar as definições, considere a curva $E$ dada por \[y^2 = x^3 + x + 5\] sobre $GF(13)$. Os pontos de $E$ são:
@@ -182,12 +191,14 @@ e $\#E(GF(13)) = 10$.
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.50]{images/ecc_example_overR.png}
-\caption{Exemplo de uma curva elíptica sobre $\mathBB{R}$}
+\caption{Exemplo de uma curva elíptica sobre $\mathbb{R}$}
 \label{fig:ecc_example_overR}
 \end{center}
 \end{figure}
 
 A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura \ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
 %Dá uma olhada na matplotlib   /numpy
+
+
 
 \end{document}
