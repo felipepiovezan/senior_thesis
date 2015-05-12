@@ -203,38 +203,38 @@ A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
     \begin{codebox}
 		\label{alg:sum_over_ECC}
     \Procname{$\proc{Soma}(P_1, P_2)$}
-    \li \If $P_1 = O$ 
+	\li \If $P_1 = O$ 			\label{li:sum-zero-begin}
 	\Do
 		\li output $P_2$ and stop. 
 	\End
 	\li \If $P_2 = O$ 
 	\Do
 		\li output $P_1$ and stop. 
-	\End
+	\End						\label{li:sum-zero-end}
 	\li Set $x_1 \gets P_1.x$
 	\li Set $y_1 \gets P_1.y$
 	\li Set $x_2 \gets P_2.x$
 	\li Set $y_2 \gets P_2.y$
-	\li \If $x_1 \not= x_2$ 
+	\li \If $x_1 \not= x_2$ 	\label{li:sum-lambda1-begin}
 	\Do	
-		\li Set $\lambda \gets (y_1 - y_2)/(x_1 - x_2)$
+		\li Set $\lambda \gets (y_1 - y_2)/(x_1 - x_2)$ \label{li:sum-lambda1-end}
 	\li \Else
-		\li \If $y_1 \not= y_2$ or $y_2 = 0$
+	\li \If $y_1 \not= y_2$ or $y_2 = 0$ \label{li:sum-sumzero-begin}
 		\Do
 			\li Output $O$ and stop.
-		\End
-		\li Set $\lambda \gets (3{x_2}^2 + a)/(2y_2)$
+		\End							\label{li:sum-sumzero-end}
+		\li Set $\lambda \gets (3{x_2}^2 + a)/(2y_2)$	\label{li:sum-lambda2}
 	\End
-	\li Set $x_3 \gets \lambda^2 - x_1 - x_2 \quad mod\; p$
-	\li Set $y_3 \gets (x_2 - x_3)\lambda - y_1 \quad mod\; p$
+	\li Set $x_3 \gets \lambda^2 - x_1 - x_2 \quad mod\; p$		\label{li:sum-final-begin}
+	\li Set $y_3 \gets (x_2 - x_3)\lambda - y_1 \quad mod\; p$	\label{li:sum-final-end}
 	\li output $(x_3, y_3)$
     \end{codebox}
 
 
-	Uma operação de soma pode ser definida sobre uma curva elíptica de modo a torná-la um grupo e, assim, poderemos definir o problema do logaritmo discreto sobre esse conjunto. Por clareza, definimos a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme \cite{IEE1363}.
-
-
-
+	Uma operação de soma ($+$) pode ser definida sobre uma curva elíptica de modo a torná-la um grupo e, assim, poderemos definir o problema do logaritmo discreto sobre esse conjunto. Intuitivamente, tem-se que a soma de dois pontos $P_1 + P_2$ é o ponto $P_3$ com a propriedade que $P_1$, $P_2$ e $-P_3$ são colineares. Para um ponto $P = (x, y)$, define-se $-P = (x, -y)$. Por clareza, definimos a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme \cite{IEE1363}.  As linhas \ref{li:sum-zero-begin}--\ref{li:sum-zero-end} tratam o ponto no infinito, $O$, como o elementro neutro da operação. No caso em que os pontos não possuam a mesma coordenada $x$, as linhas \ref{li:sum-lambda1-begin}--\ref{li:sum-lambda1-end} calculam o coeficiente angular da reta secante que passa por $P_1$ e $P_2$, enquanto calcula-se o coeficiente da reta tangente a curva em um dos pontos quando $P_1 = P_2$ (linha \ref{li:sum-lambda2}). Caso os pontos difiram apenas na coordenada $y$, então temos $P_1 = -P_2$ e o algoritmo retorna o elemento neutro (linhas \ref{li:sum-sumzero-begin}--\ref{li:sum-sumzero-end}). Por fim, as linhas \ref{li:sum-final-begin}--\ref{li:sum-final-end} utilizam o coeficiente mencionado anteriormente para calcular as coordenadas de $P_3$.
+	
+	
+	
 \bibliographystyle{ufscThesis/ufsc-alf}
 \bibliography{bibliografia}
 
