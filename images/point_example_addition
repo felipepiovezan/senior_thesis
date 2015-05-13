@@ -1,9 +1,0 @@
-#plot using:
- set terminal png; 
- set output "ecc_example_addition.png";
- set xrange [0:12]; set yrange [0:12];
- unset key;
- set title "Elliptic Curve over GF(13): y^2 = x^3 + x + 5"
- set xlabel "x"; set ylabel "y";
- plot "ecc_example_overGF13.dat"  using 1:2 pointtype 5, -1.333333333*x + 18.666666666;
-

@@ -44,9 +44,9 @@
 \numerodemembrosnabanca{5} % Isso decide se haverá uma folha adicional
 \orientadornabanca{sim} % Se faz parte da banca definir como sim
 \coorientadornabanca{sim} % Se faz parte da banca definir como sim
-%\bancaMembroA{Prof. Dr. Luiz Cláudio Villar dos Santos} %Nome do presidente da banca
+\bancaMembroA{Prof. Dr. Luiz Cláudio Villar dos Santos} %Nome do presidente da banca
 \bancaMembroB{Prof. Dr. José Luís Almada Güntzel}      % Nome do membro da Banca
-%\bancaMembroC{Prof. Dr. Daniel Santana de Freitas}     % Nome do membro da Banca
+\bancaMembroC{Prof. Dr. Daniel Santana de Freitas}     % Nome do membro da Banca
 %\bancaMembroD{Quarto membro}       % Nome do membro da Banca
 %\bancaMembroE{Prof. quinto membro}       % Nome do membro da Banca
 %\bancaMembroF{Prof. sexto membro}        % Nome do membro da Banca
@@ -232,8 +232,42 @@ A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 
 
 	Uma operação de soma ($+$) pode ser definida sobre uma curva elíptica de modo a torná-la um grupo e, assim, poderemos definir o problema do logaritmo discreto sobre esse conjunto. Intuitivamente, tem-se que a soma de dois pontos $P_1 + P_2$ é o ponto $P_3$ com a propriedade que $P_1$, $P_2$ e $-P_3$ são colineares. Para um ponto $P = (x, y)$, define-se $-P = (x, -y)$. Por clareza, definimos a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme \cite{IEE1363}.  As linhas \ref{li:sum-zero-begin}--\ref{li:sum-zero-end} tratam o ponto no infinito, $O$, como o elementro neutro da operação. No caso em que os pontos não possuam a mesma coordenada $x$, as linhas \ref{li:sum-lambda1-begin}--\ref{li:sum-lambda1-end} calculam o coeficiente angular da reta secante que passa por $P_1$ e $P_2$, enquanto calcula-se o coeficiente da reta tangente a curva em um dos pontos quando $P_1 = P_2$ (linha \ref{li:sum-lambda2}). Caso os pontos difiram apenas na coordenada $y$, então temos $P_1 = -P_2$ e o algoritmo retorna o elemento neutro (linhas \ref{li:sum-sumzero-begin}--\ref{li:sum-sumzero-end}). Por fim, as linhas \ref{li:sum-final-begin}--\ref{li:sum-final-end} utilizam o coeficiente mencionado anteriormente para calcular as coordenadas de $P_3$.
+
+	Note que, embora tenhamos utilizado termos como coefienciente angular e reta tangente, normalmente relacionados a funções sobre o domínio dos reais, estamos trabalhando sobre $GF(13)$, logo todas as operações de soma, subtração, multiplicação ou divisão que aparecem no algoritmo \proc{Soma} devem ser realizadas $mod\; p$. Isso ilustra uma das primeiras dificuldades de implementação de algoritmos relacionados a curvas elípticas: as operações de multiplicação e inversão em $GF(p)$ não são triviais.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.50]{images/ecc_example_addition.png}
+\caption{Somando pontos em uma curva elíptica sobre $GF(13)$}
+\label{fig:ecc_example_addition}
+\end{center}
+\end{figure}
+
+Com isto em mente, a intuição dada pelo domínio real nos ajuda a visualizar a soma em $GF(p)$. Utilizando a mesma curva do exemplo anterior, a figura \ref{fig:ecc_example_addition} ilustra a adição dos pontos $P_1 = (10,0)$ e $P_2= (8,5)$. Primeiro, a reta que sai de $P_1$ e passa por $P_2$ é traçada. Quando esta reta atinge os limites do gráfico, isto é, uma de suas coordenadas atinge o valor $13$, pode-se entender que a operação de módulo é aplicada, efetivamente continuando a reta do lado oposto do grafo. Tal procedimento é repetido até que um ponto de $E$, aqui chamado de $-P_3$, seja encontrado, de modo que $P_1$, $P_2$ e $-P_3$ sejam colineares. A soma de $P_1$ e $P_2$ é dada então por $P_3$. Note ainda que, caso dois pontos tenham a mesma coordenada $x$, a reta que passa por ambos está na vertical e, portanto, nunca tocará um terceiro ponto de $E$ que não seja o ponto no infinito, $O$.
+
+Algebricamente, teriamos que:
+
+\begin{align*} 
+	\lambda &= (y_1 - y_2) / (x_1 - x_2) \quad mod\; p\\
+			&= (0 - 5) / (10 - 8) \quad mod\; 13\\
+			&= -5 / 2  \quad mod\; 13 \\
+			&= 8 * 7 \quad mod\; 13 \\
+			&= 4
+\end{align*}
+
+\begin{align*} 
+	x_3 &= \lambda ^2 - x_1 - x_2 \quad mod\; p \\
+		&= 4^2 - 10 - 8 \quad mod \; 13 \\
+		&= 11
+\end{align*}
 	
-	
+\begin{align*} 
+	y_3 &= (x_2 - x_3)\lambda -y_2 \quad mod\; p \\
+		&= (8-11)4 - 5 \quad mod \; 13 \\
+		&= 9
+\end{align*}
+
+O que é equivalente às coordenadas de $P_3$ obtidas geometricamente.
 	
 \bibliographystyle{ufscThesis/ufsc-alf}
 \bibliography{bibliografia}

@@ -1,0 +1,16 @@
+#plot using:
+ set terminal png; 
+ set output "ecc_example_addition.png";
+ set xrange [0:13]; set yrange [0:13];
+ unset key;
+ set xtics 1;
+ set ytics 1;
+ set grid ytics xtics;
+ set title "Sum of two points on the elliptic Curve over GF(13): y^2 = x^3 + x + 5"
+ set xlabel "x"; set ylabel "y";
+ set label "P1 = (10,0)" textcolor rgb "red" at 10,0.5;
+ set label "P2 = (8,5)" textcolor rgb "red" at 8.1,5.3;
+ set label " - P3" textcolor rgb "red" at 11.1,4.3;
+ set label "P3" textcolor rgb "red" at 11.1,9.3;
+ set arrow from 11,4 to 11,9 lc rgb "blue";
+ plot "ecc_example_overGF13.dat"  using 1:2 pointtype 5, -2.5*x+25 lt rgb "blue", -2.5*x + 12 lt rgb "blue", -2.5*x +44.5 lt rgb "blue", (x>=11) ? -2.5*x+31.5 : 1/0 lt rgb "blue";
