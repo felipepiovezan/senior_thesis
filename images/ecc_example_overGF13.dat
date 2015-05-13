@@ -1,0 +1,22 @@
+# plotting the points {O, (1,4), (1,9), (3,6), (3,7), (8,5), (8,8), (10,0), (11,4), (11,9)
+# for the curve y^2 = x^3 + x + 5
+
+#x	y
+1	4
+1	9
+3	6
+3	7
+8	5
+8	8
+10	0
+11	4
+11	9
+
+#plot using:
+# set terminal png; 
+# set output "ecc_example_overGF.png";
+# set xrange [0:12]; set yrange [0:12];
+# unset key;
+# set title "Elliptic Curve over GF(13): y^2 = x^3 + x + 5"
+# set xlabel "x"; set ylabel "y";
+# plot "ecc_example_overGF13.dat"  using 1:2 pointtype 5;

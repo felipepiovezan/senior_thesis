@@ -99,7 +99,7 @@ Um agradecimento
 Introducao!
 
 \chapter{Conceitos Básicos em Criptografia}
-A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando pelas definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. Por fim, discute-se métodos utilizados para troca de chaves em criptografia assimétrica. O material aqui apresentado é baseado principalmente no trabalho de Goldreich e nas notas de aula do professor Charles Rackoff. Apresentaremos os conceitos mais importantes para o entendimento do ambiente em que algoritmos de curvas elípticas são utilizados, cientes de que uma abordagem completa estaria fora do escopo deste trabalho. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas anteriormente.
+A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando pelas definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. Por fim, discute-se métodos utilizados para troca de chaves em criptografia assimétrica. O material aqui apresentado é baseado principalmente no trabalho de Goldreich \cite{Goldreich:2006:FCV:1202577} e nas notas de aula do professor Charles Rackoff \cite{Rackoff}. Apresentaremos os conceitos mais importantes para o entendimento do ambiente em que algoritmos de curvas elípticas são utilizados, cientes de que uma abordagem completa estaria fora do escopo deste trabalho. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas anteriormente.
 
 \section{Sessões seguras}
 
@@ -226,7 +226,7 @@ A figura \ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 		\li Set $\lambda \gets (3{x_2}^2 + a)/(2y_2)$	\label{li:sum-lambda2}
 	\End
 	\li Set $x_3 \gets \lambda^2 - x_1 - x_2 \quad mod\; p$		\label{li:sum-final-begin}
-	\li Set $y_3 \gets (x_2 - x_3)\lambda - y_1 \quad mod\; p$	\label{li:sum-final-end}
+	\li Set $y_3 \gets (x_2 - x_3)\lambda - y_2 \quad mod\; p$	\label{li:sum-final-end}
 	\li output $(x_3, y_3)$
     \end{codebox}
 

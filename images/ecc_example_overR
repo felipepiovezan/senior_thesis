@@ -1,0 +1,9 @@
+# over R
+#plot using:
+ set terminal png; 
+ set output "ecc_example_overR.png";
+ set xrange [-5:5]; set yrange [-5:5];
+ unset key;
+ set title "Elliptic Curve over R: y^2 = x^3 + x + 5"
+ set xlabel "x"; set ylabel "y";
+ plot sqrt(x**3 + x + 5), -sqrt(x**3 + x + 5);
