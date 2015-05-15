@@ -56,7 +56,7 @@
 Um agradecimento
 }
 
-\epigrafe{"Nevermore"}
+\epigrafe{``Nevermore''}
 {The Raven}
 
 \textoResumo {
@@ -101,7 +101,7 @@ Introducao!
 \chapter{Conceitos Básicos em Criptografia}
 A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando pelas definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. O material desta seção é baseado principalmente no trabalho de Goldreich \cite{Goldreich:2006:FCV:1202577} e nas notas de aula do professor Charles Rackoff \cite{Rackoff}, apresentando apenas uma síntese do conteúdo. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas. Embora não seja fundamental ao entendimento do resto deste trabalho, a primeira parte do capítulo é importante por situar o leitor no contexto em que a criptografia assimétrica é necessária.
 
-Em seguida, a definição de curva elíptica é apresentada, assim como operações necessárias à definição do logaritmo discreto. Um conhecimento básico de teoria de grupos é assumido, embora os conceitos mais importantes sejam revisados. Muitos dos exemplos e definições utilizados são baseados no anexo do padrão IEEE 1363, \cite{IEE1363}.
+Em seguida, a definição de curva elíptica é apresentada, assim como operações necessárias à definição do logaritmo discreto. Um conhecimento básico de teoria de grupos é assumido, embora os conceitos mais importantes sejam revisados. Muitos dos exemplos e definições utilizados são baseados no anexo A do padrão IEEE 1363, \cite{IEE1363}.
 \section{Sessões seguras}
 
 A  aplicação mais tradicional de criptografia, aquela descrita por um usuário comum de informática, encontra-se no estabelecimento de \keyword{sessões seguras} (\ingles{secure sessions}). Isto é, duas pessoas, $A$ e $B$, tendo um segredo em comum (daqui em diante chamado de \keyword{chave}), gostariam de se comunicar através de um canal potencialmente inseguro. Com alguma frequência, $A$ gostaria de mandar algo\footnote{Tratamos de comunicação unidirecional aqui por simplicidade, todos os conceitos podem ser expandidos para um canal bidirecional.} (\keyword{texto em claro}, \ingles{plaintext}) para $B$, denotar-se-á por \keyword{mensagem} tudo aquilo que $A$ gostaria de enviar para $B$, embora $A$ esteja restrito a enviar uma fração de tal mensagem por vez. Considera-se também a existência de um adversário $ADV$ computacionalmente irrestrito, limitado a ouvir tudo que $A$ envia pelo canal. Informalmente, $A$ gostaria de "cifrar" a mensagem de modo que $ADV$ não possa descobrir nenhuma informação sobre a mesma.
@@ -297,7 +297,9 @@ Suponha que um ponto $G$ em uma curva $E$ tenha ordem $r$, onde $r^2$ não divida
 \end{definicao}
 
 Uma comparação com o logaritmo tradicional pode ser feita para o entendimento da definição: enquanto $log_b x$ responde a pergunta de quantas vezes $b$ deve ser \textbf{multiplicado} por ele mesmo até que se encontre $x$, o logaritmo discreto de $P$ trabalha com quantas vezes precisa-se \textbf{somar} $G$ até que se encontre $P$.
-	
+
+\section{}
+
 \bibliographystyle{ufscThesis/ufsc-alf}
 \bibliography{bibliografia}
 
