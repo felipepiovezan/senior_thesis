@@ -296,10 +296,24 @@ Pode-se agora definir o logaritmo discreto de um ponto em uma curva elíptica:
 Suponha que um ponto $G$ em uma curva $E$ tenha ordem $r$, onde $r^2$ não divida a ordem da curva $\#E(GF(p))$. Então um ponto $P$ satisfaz $P = lG$ para algum $l$ se, e somente se, $rP = O$. O coeficiente $l$ é chamado de \keyword{logaritmo discreto} de $P$ em relação ao ponto base $G$.
 \end{definicao}
 
-Uma comparação com o logaritmo tradicional pode ser feita para o entendimento da definição: enquanto $log_b x$ responde a pergunta de quantas vezes $b$ deve ser \textbf{multiplicado} por ele mesmo até que se encontre $x$, o logaritmo discreto de $P$ trabalha com quantas vezes precisa-se \textbf{somar} $G$ até que se encontre $P$.
+Uma comparação com o logaritmo tradicional pode ser feita para o entendimento da definição: enquanto $log_b x$ responde a pergunta de quantas vezes $b$ deve ser \textbf{multiplicado} por ele mesmo até que se encontre $x$, o logaritmo discreto de $P$ trabalha com quantas vezes precisa-se \textbf{somar} $G$ até que se encontre $P$. Mais formalmente, tem-se \cite{CryptoEncyc}:
+
+\begin{definicao}
+	Considere uma curva elíptica $E$ e um ponto $P\in E$ de ordem $n$. Dado um ponto $Q \in \langle P \rangle = \{0, P, 2P, ... (n-1)P\} $, o \textbf{problema do logaritmo discreto sobre curvas elípticas} (ECDLP) consiste em computar $0 \leq l \leq n-1$ tal que $Q = lP$.
+\end{definicao}
+
+O algoritmo ingênuo para resolver uma instância de ECDLP consiste em computar os múltiplos de $P$ até que se encontre $Q$, o que pode levar até $n$ adições, impraticável para valores muito altos de $n$. Atualmente, os melhores algoritmos conhecidos são baseados em variações do método \ingles{Pollard's $\rho$} e executam em tempo $O(\sqrt{n})$ \cite{Pollard1}\cite{Pollard2}.
 
 \section{\ingles{Elliptic Curve Diffie Hellman}}
-Em 1976,  Whitfield Diffie e Martin Hellman publicaram um método para a troca de chaves em um canal inseguro \cite{Diffie:2006:NDC:2263321.2269104} o qual é baseado no problema do logaritmo discreto de inteiros em $GF(p)$. Embora não forneça autenticação (isto é, $A$ não possui garantias de que está de fato conversando com $B$\footnote{Nenhum dos protocolos apresentados aqui possuirá essa característica, visto que é algo difícil de ser alcançado sem uma Infraestrutura de Chaves Públicas (\ingles{Public Key Infrastructure}) previamente estabelecida. Atualmente, isto é feito através de certificados e autoridades certificadoras. Ainda assim, tais protocolos são realistas e servem como base para versões autenticadas dos mesmos.}), ele é a base de protocolos autenticados. Pouco tempo depois, em 1978, a dificuldade da fatoração de números inteiros foi utilizada por R.L. Rivest, A. Shamir, e L. Adleman para atingir o mesmo propósito, no algoritmo conhecido como $RSA$ \cite{Rivest:1978:MOD:359340.359342}. Em 1985, dois autores propuseram independentemente o uso de curvas elípticas para a troca de chaves (\cite{koblitz1987elliptic}, \cite{Miller}) com tais métodos se popularizando a partir de 2004\footnote{Mais recentemente, as pesquisas em algoritmos baseados em Retículos (\ingles{Lattices}) ganharam força novamente, visto que essa é uma classe de algoritmos resistentes a ataques por computadores quânticos, ao contrário daqueles baseados em Diffie-Hellman e RSA. }.
+Em 1976,  Whitfield Diffie e Martin Hellman publicaram um método para a troca de chaves em um canal inseguro \cite{Diffie:2006:NDC:2263321.2269104} o qual é baseado no problema do logaritmo discreto de inteiros em $GF(p)$. Embora não forneça autenticação (isto é, $A$ não possui garantias de que está de fato conversando com $B$\footnote{Nenhum dos protocolos apresentados aqui possuirá essa característica, visto que é algo difícil de ser alcançado sem uma Infraestrutura de Chaves Públicas (\ingles{Public Key Infrastructure}) previamente estabelecida. Atualmente, isto é feito através de certificados e autoridades certificadoras. Ainda assim, tais protocolos são realistas e servem como base para versões autenticadas dos mesmos.}), ele é a base de protocolos autenticados. Pouco tempo depois, em 1978, a dificuldade da fatoração de números inteiros foi utilizada por R.L. Rivest, A. Shamir, e L. Adleman para atingir o mesmo propósito, no algoritmo conhecido como $RSA$ \cite{Rivest:1978:MOD:359340.359342}. Em 1985, dois autores propuseram independentemente o uso de curvas elípticas para a troca de chaves (\cite{koblitz1987elliptic}, \cite{Miller}) com tais métodos se popularizando a partir de 2004\footnote{Mais recentemente, as pesquisas em algoritmos baseados em Retículos (\ingles{Lattices}) ressurgiram, visto que essa é uma classe de algoritmos resistentes a ataques por computadores quânticos, ao contrário daqueles baseados em Diffie-Hellman e RSA. }.
+
+Descreve-se aqui um dos protocolos padronizados em \cite{IEE1363}, lá referenciado por DL/ECKAS-DH1, ou \ingles{Discrete Logarithm and Elliptic Curve Key Agreement Scheme, Diffie-Hellman version}. $A$ e $B$ devem executar os seguintes passos para o estabelecimento de uma chave:
+
+\begin{enumerate}
+	\item Em comum acordo, estabelecer um conjunto de parâmetros relacionados a uma curva elíptica,
+\end{enumerate}
+
+
 
 \bibliographystyle{ufscThesis/ufsc-alf}
 \bibliography{bibliografia}
