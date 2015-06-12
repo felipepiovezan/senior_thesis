@@ -53,7 +53,7 @@
 %\bancaMembroG{Prof. sétimo membro}       % Nome do membro da Banca
 
 \agradecimento{
-Um agradecimento
+TBC
 }
 
 \epigrafe{``Nevermore''}
@@ -96,7 +96,32 @@ Um agradecimento
 % Elementos textuais
 
 \chapter{Introdução}
-Introducao!
+Os protocolos utilizados para comunicação segura, sejam eles aqueles utilizados por browsers (como o TLS), por terminais (como o SSH) ou até mesmo em aplicações da internet das coisas (\cite{Resner:SENSORNETS:2015}), dependem de duas grandes classes de algoritmos criptográficos: os simétricos e os assimétricos. Embora a transferência de dados propriamente dita seja feita com algoritmos simétricos, como o AES, o esbelecimento do canal seguro é, de modo geral, iniciado com o uso da classe assimétrica, a qual permite a definição de um chave secreta conhecida apenas pelos participantes da conversa. Essa chave passa a ser utilizada pelo resto da sessão segura em algoritmos simétricos.
+
+De modo geral, observa-se que algoritmos simétricos possuem implementações extremamente simples, podendo ser otimizados para diferentes configurações de processadores. É o caso do \ingles{Rijndael} \cite{daemen1999aes}, vencedor da competição que elegeu o \ingles{Advanced Encryption Standard} (AES), cuja implementação pode ser feita executando-se operações matemáticas ou com o uso de \ingles{look-up tables} que variam de tamanho: 256 bytes, 1KB ou 4KB. Desse modo, permite-se a execução do AES em processadores com diferentes configurações de memória. Tamanha flexibilidade não ocorre por acaso: o algoritmo foi desenvolvido com esse objetivo, visto que a competição incluiu critérios como requerimento de memória, eficiência computacional e simplicidade para avaliação dos candidatos \cite{nechvatal2000report}.
+
+Por outro lado, os algoritmos assimétricos possuem implementações complexas pela natureza do problema que propõem: muitos deles estão associados ao uso de conjecturas da teoria dos números sob domínios de ordem muito grande, isto é, trabalham com conjuntos cuja cardinaliadde precisa de centenas de bits para ser representada. Um dos algoritmos mais famosos dessa classe, o RSA, é baseado na dificuldade da fatoração de inteiros e trabalha com números na ordem de 1024 bits. Pode-se perceber, então, um dos possíveis inconvenientes que esse algoritmo trás: a aritmética de números desse tamanho não é trivial de ser implementada, principalmente se considerarmos que processadores utlizados em, por exemplo, redes de sensores trabalham com registradores de 8 ou 16 bits\footnote{É o caso do \ingles{Atmel ATmega} (8 bits) ou do \ingles{Texas Instruments MSP430} (16 bits)}.
+
+Nesse cenário, as técnicas baseadas em curvas elípticas (ECC) mostraram-se muito interessantes por propiciarem um mesmo nível de seguraça para um menor tamanho de chave. De acordo com \cite{LenstraSelectingKeys}, a equivalência entre os tamanhos de chaves para as duas técnicas pode ser resumida na tabela \ref{tab:RSAxECC}. Pode-se notar que a diferença chega próximo de uma ordem de magnitude em muitos casos, e, de fato, este é um dos argumentos utilizados na RFC que adiciona algoritmos de ECC ao protocolo TLS \cite{Blake-wilson06ellipticcurve}.
+
+Apesar dos algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação de criptografia de chaves públicas em ambientes com recursos limitados ainda é vista como um desafio pelo meio acadêmico \cite {Wenger:2013}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cc}
+\hline
+ECC             & RSA             \\ \hline
+163             & 1024            \\
+233             & 2048            \\
+283             & 3072            \\
+409             & 7680            \\ \hline
+\end{tabular}
+\caption{Tamanho de chave (em bits) necessário para que os algoritmos ECC e RSA forneceram segurança equivalente.}
+\label{tab:RSAxECC}
+\end{table}
+
+
+
 
 \chapter{Conceitos Básicos em Criptografia}
 A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando por definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. O material desta seção é baseado principalmente no trabalho de Goldreich \cite{Goldreich:2006:FCV:1202577} e nas notas de aula do professor Charles Rackoff \cite{Rackoff}, apresentando apenas uma síntese do conteúdo. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas. Embora não seja fundamental ao entendimento do resto deste trabalho, a primeira parte do capítulo é importante por situar o leitor no contexto em que a criptografia assimétrica é necessária.
@@ -137,7 +162,7 @@ No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$
 Se $m > n$ então nenhum $(Enc, Dec)$ é perfeitamente seguro.
 \end{teorema}
 
-A prova, embora simples, é omitida por clareza. Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$) e definiremos uma classe de funções com a qual trabalharemos.
+A prova, embora simples, é omitida por estar fora do escopo do trabalho. Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$) e definiremos uma classe de funções com a qual trabalharemos.
 
 \begin{definicao}
 Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada $n\in\mathbb{N}$ e a cada $k \in \{0,1\}^n$ uma função $F_k: \{0,1\}^n \to \{0,1\}^n$ de modo que exista um algoritmo com tempo de execução polynomial (em $n$) o qual compute $F_k(x)$.
@@ -145,7 +170,7 @@ Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada
 
 Exige-se que tais geradores de função sejam \keyword{pseudo-aleatórios}, isto é, um adversário não consegue distinguir entre um $F_k$ (para um $k$ escolhido aleatoriamente) e uma função escolhida aleatoriamente $f:\{0,1\}^n \to \{0,1\}^n$ com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
 
-Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existem é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso.
+Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existam é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso. De fato, uma condição necessária para a segurança de toda criptografia moderna é que $P \not= NP$, embora essa não seja uma condição suficiente.\footnote{O leitor intrigado por essa observação pode notar que não basta ser difícil quebrar um sistema criptográfico no pior caso, e é essa noção que é capturada pelo problema $P \not= NP$. É possível construir um sistema criptográfico para o qual o problema de distiguir $Enc$ é NP-Completo, embora exista uma algoritmo eficiente que o resolva em $99\%$ dos casos \cite{Goldreich:2006:FCV:1202577}.}
 
 
 \section{Curvas Elípticas}
@@ -323,6 +348,8 @@ As etapas, embora simples, merecem diversas considerações adicionais. Os parâmet
 
 Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição \ref{def:logdiscreto} para verificar que $W'$ é, de fato, um múltiplo de $G$. Nota-se também que, até esse momento, todas as mensagens foram trocadas em um canal inseguro: qualquer adversário pode ter acesso aos parâmetros de domínio, bem como a $W$ e $W'$ (o primeiro é enviado por $A$ para $B$ e o segundo por $B$ para $A$). Porém apenas $A$ e $B$ conseguem computar facilmente o valor $P = sW' = s'W = ss'G$, assumindo que o problema ECDLP seja, de fato, difícil. Por fim, aplica-se alguma função sobre o valor $x_P$ para gerar uma string $k$ de tamanho apropriado, a qual será utilizada em funções como o $AES_k$.
 TBC
+
+\chapter{Trabalhos Correlatos}
 
 
 
