@@ -1,3 +1,6 @@
+*.las
+*.lsb
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -127,4 +130,4 @@ sympy-plots-for-*.tex/
 *.sav
 
 
-.swp
+*.swp
