@@ -97,7 +97,7 @@ TBC
 
 \chapter{Introdução}
 
-Com a expansão da internet, não apenas servidores e \ingles{desktops} passam a fazer parte da rede, mas também um grande número de pequenos dispositivos como PDAs, celulares e sensores. Acoplados ao processores de tais equipamentos, encontram-se transmissores de rádio que permitem a comunição com outros dispositivos, estejam eles em uma rede local ou à longa distância conectados por algum \ingles{gateway}. Algumas características comuns a todos eles podem ser encontradas, como limitações na capacidade de processamento, quantidade de memória e disponibilidade de bateria, além de estarem potencialmente expostos a diversos usuários maliciosos. O desafio, então, surge ao observar-se que a solução para o último problema entra em conflito com tais limitações.
+Com a expansão da internet, não apenas servidores e \ingles{desktops} passam a fazer parte da rede, mas também um grande número de pequenos dispositivos como PDAs, celulares e sensores. Acoplados ao processores de tais equipamentos, encontram-se transmissores de rádio que permitem a comunição com outros dispositivos, estejam eles em uma rede local ou à longa distância conectados por algum \ingles{gateway}. Alguns problemas em comum podem ser encontrados nesses dispositivos, como limitações na capacidade de processamento, quantidade de memória e disponibilidade de bateria, além de estarem potencialmente expostos a diversos usuários maliciosos. O desafio, então, surge ao observar-se que a solução para a última deficiência entra diretamente em conflito com as primeiras.
 
 Os protocolos utilizados para comunicação segura, sejam eles aqueles utilizados por browsers (como o TLS), por terminais (como o SSH) ou até mesmo em aplicações da internet das coisas (como \cite{Resner:SENSORNETS:2015}), dependem de duas grandes classes de algoritmos criptográficos: os simétricos e os assimétricos. Embora as mensagens sejam cifradas com algoritmos simétricos, como o AES, o esbelecimento de um canal seguro é, de modo geral, iniciado com o uso da classe assimétrica, a qual permite a definição de um chave secreta conhecida apenas pelos participantes da conversa. Essa chave passa a ser utilizada pelo resto da sessão segura em algoritmos simétricos.
 
@@ -124,7 +124,26 @@ ECC             & RSA             \\ \hline
 Apesar dos algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação eficiente de criptografia de chaves públicas em ambientes com recursos limitados atraiu muitos esforços da academia \cite {Wenger:2013}. A motivação para esse interesse vem do crescente número de aplicações com tais características, como \ingles{smart cards}, redes de sensores sem fio ou etiquetas RFID. Para o caso de redes de sensores com processadores de 8 bits, apenas em 2004 demonstrou-se a viabilidade do uso de algoritmos de ECC em tais plataformas \cite{first8bits:Gura}. De modo similar, a primeira implementação em hardware com consumo energético baixo o suficiente para ser alimentado passivamente foi demonstrada em 2008 \cite{Hein:2009}.
 
 
+\section{Motivação e trabalho proposto}
+Não é incomum em aplicações embarcadas que uma parcela considerável da computação seja efetuada por circuitos especializados, devido às demandas de performance e eficiência. De fato, segundo \cite{Dally:2008}, um ASIC (\ingles{application-specific integrated circuit}) pode atingir uma eficiência de $5pJ/op$ na tecnologia CMOS de 90-nm. Por outro lado, processadores embarcados altamente eficientes atingem apenas $250 pJ/op$, uma perda de 50x. Claramente realiza-se uma troca da flexibilidade de um processador de propósito geral pela eficiência propiciada por ASICs.
+
+Nota-se, porém, que o tempo de design de um ASIC pode ser considerável e que muitas aplicações não se adequam a inflexibilidade propiciada por essa solução. Soluções flexíveis são necessárias em classes de problemas onde o desenvolvimento de novos algoritmos ou o surgimento repentino de uma demanda inesperada são comuns. Em criptografia, um exemplo de tal demanda pode ser a descoberta de um novo ataque a algum cifrador, o que poderia requerer o aumento de algum parâmetro, como tamanho de chave, ou até mesmo a troca por outro algoritmo, o que é facilitado em implementações via software. Pode-se citar um caso onde uma especificação de hardware não acompanhou a evolução de algoritmos criptográficos: em 2011, o conjunto de instruções ARMv8 para processadores ARM foi anunciado, trazendo instruções específicas para os algoritmos SHA1 e SHA2. O primeiro foi considerado inseguro e seu uso descontinuado a partir de 2010, enquanto o segundo já teve seu sucessor escolhido via competição em 2012 \cite{sha3}.
+
+A busca por soluções eficientes em software para criptografia, então, não deve ser desconsiderada. Em se tratanto de eficiência energética em um processador embarcado, os fatores mais impactantes são ilustrados pela figura \ref{fig:energy_usage}. Observa-se que o fornecimento de dados e instruções totaliza $70\%$ da energia total consumida, tornando-se alvos importantes para otimizações. Com base nisso, o presente trabalho irá analisar o comportamento do sistema de memórias de um processador embarcado executando algoritmos de curvas elípticas, variando-se parâmetros do processador (como tamanho e associatividade das caches), parâmetros do algoritmo (como as curvas utilizadas e o tamanho de chaves) e aplicando-se técnicas de otimização voltadas a eficiência energética. Assim, será possível relacionar a influência de tais parâmetros no consumo de energia pelo sistema de memória.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.50]{images/intro_energy_usage.png}
+\caption{Consumo de energia em um processador embarcado \cite{Dally:2008}}
+\label{fig:energy_usage}
+\end{center}
+\end{figure}
+
+O trabalho está dividido da seguinte maneira: o capítulo \ref{ch:basic_crypto} define os conceitos básicos em criptografia e situa o contexto em que algoritmos de ECC são necessários, o capítulo \ref{ch:correlatos} detalha os trabalhos correlatos, o capítulo \ref{ch:experimentos} expõe os experimentos realizados, a metodologia adotada e resultados obtidos. Por fim, o capítulo \ref{ch:conclusao} conclui o trabalho e levanta possibilidades de trabalhos futuros.
+
+
 \chapter{Conceitos Básicos em Criptografia}
+\label{ch:basic_crypto}
 A presente seção pretende introduzir o leitor aos conceitos básicos de criptografia, iniciando por definições clássicas, seguido dos conceitos relacionados à criptografia simétrica. O material desta seção é baseado principalmente no trabalho de Goldreich \cite{Goldreich:2006:FCV:1202577} e nas notas de aula do professor Charles Rackoff \cite{Rackoff}, apresentando apenas uma síntese do conteúdo. O leitor interessado na bela teoria que suporta a criptografia é incentivado a consultar as referências indicadas. Embora não seja fundamental ao entendimento do resto deste trabalho, a primeira parte do capítulo é importante por situar o leitor no contexto em que a criptografia assimétrica é necessária.
 
 Em seguida, o conceito de curva elíptica é apresentado, assim como operações necessárias à definição do logaritmo discreto. Um conhecimento básico de teoria de grupos é assumido, embora os conceitos mais importantes sejam revisados. Muitos dos exemplos e definições utilizados são baseados no anexo A do padrão IEEE 1363, \cite{IEE1363}.
@@ -351,6 +370,11 @@ Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição \ref{d
 TBC
 
 \chapter{Trabalhos Correlatos}
+\label{ch:correlatos}
+\chapter{Experimentos realizados}
+\label{ch:experimentos}
+\chapter{Conclusões e trabalhos futuros}
+\label{ch:conclusao}
 
 
 
