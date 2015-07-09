@@ -165,7 +165,7 @@ Tal cenário é representado pela figura~\ref{fig:crypto_model} e motiva a primeir
     Define-se que uma chave é um $K \in \{0,1\}^n$, onde $K = K_1K_2\dots K_n$, e uma mensagem é um $M \in \{0,1\}^m$, onde $M = M_1M_2\dots M_m$\footnote{A notação $\{0,1\}^n$ representa uma string de exatamente $n$ caracteres do conjunto $\{0,1\}$, enquanto $\{0,1\}^*$ denota uma string de caracteres desse mesmo conjunto, porém de tamanho arbitrário}.
 \end{definicao}
 
-Pode-se, então, definir uma função responsável por mapear uma mensagem e uma chave para uma nova string, a qual espera-se que seja ``aleatória'' (uma definição precisa para esse termo será dada ). De modo similar, precisa-se de uma função que desfaça o trabalho da primeira, isto é, uma função que receba a string aleatória junto com a chave utilizada para gerá-la e produza a mensagem original. Tais idéias são capturas pelas seguintes definições:
+Pode-se, então, definir uma função responsável por mapear uma mensagem e uma chave para uma nova string, a qual espera-se que seja ``aleatória'' (uma definição precisa para esse termo será dada adiante). De modo similar, precisa-se de uma função que desfaça o trabalho da primeira, isto é, uma função que receba a string ``aleatória'' junto com a chave utilizada para gerá-la e produza a mensagem original. Tais idéias são capturas pelas seguintes definições:
 
 \begin{definicao}
 Uma \ingles{encryption function} é uma função \[Enc: \{0,1\}^m \times \{0,1\}^n \to \{0,1\}^*\]
@@ -177,7 +177,7 @@ Requer-se do par $(Enc, Dec)$ a seguinte \keyword{condição de corretude}: \[\for
 
 Informalmente, $Enc(M,K)$ é entendida como a mensagem $M$ cifrada que $A$ envia a $B$, o qual aplica $Dec$ para retornar ao texto em claro. É importante insistir na condição de corretude, uma vez que ela garante que qualquer mensagem cifrada por $Enc$ será corretamente produzida por $Dec$, desde que a mesma chave seja usada em ambas as funções\footnote{É comum nos referirmos ao par $(Enc, Dec)$ quando queremos discutir alguma propriedade criptográfica, visto que as duas funções geralmente estão relacionadas para conferir corretude. É um exercício interessante pensar como seria fácil obter segurança sem o requerimento de corretude.}.
 
-Pode-se agora descrever o que seria uma função segura. Existem diversas definições provadamente equivalentes na literatura, por simplicidade a definição seguinte é adotada neste trabalho:
+Pode-se agora descrever o que seria uma função segura. Informalmente, $A$ e $B$ escolheram de algum modo uma chave aleatória $K$, a qual foi utilizada para transmitir uma mensagem (cifrada) de $A$ para $B$ através de um canal inseguro. Idealmente, um adversário que queira descobrir a mensagem original, tendo visto o que foi enviado pelo canal e dispondo de quanto tempo quiser, não ganha nenhuma informação sobre a mesma. Isto é, sua melhor estratégia ainda consiste em fazer um palpite aleatório. Formalmente, diz-se que:
 
 \begin{definicao}
 O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se, para toda $f:\{0,1\}^* \to \{0,1\}^m$, a seguinte proposição é válida:
@@ -185,21 +185,21 @@ O par $(Enc, Dec)$ é dito \keyword{perfeitamente seguro} se, para toda $f:\{0,1\
 Considere o experimento em que $M$ é escolhida de modo aleatório de $\{0,1\}^m$ e $K$ é escolhida de modo aleatório de $\{0,1\}^n$. Então deve ser  verdade que: \[P[f(Enc(M,K)) = M] = 1/2^m\]
 \end{definicao}
 
-Isto é, um adversário vendo a mensagem cifrada não consegue adivinhar o valor de $M$ com probabilidade maior do que se ele simplesmente escolhesse uma mensagem aleatória. Note que o fato do adversário estar ilimitado computacionalmente é representado pelo fato de que ele é modelado como uma função arbitrária na definição.
+Note que o fato do adversário estar ilimitado computacionalmente é representado pelo fato de que ele é modelado como uma função arbitrária na definição.
  
-No caso em que $n > m$, não é difícil provar a existência de um par $(Enc, Dec)$ perfeitamente seguro: as funções $Enc(M,K) = M_1 \oplus K_1 M_2 \oplus K_2 \dots M_m \oplus K_m$ e $Dec(X,K) = X_1 \oplus K_1 X_2 \oplus K_2 \dots X_m \oplus K_m$ satisfazem a definição\footnote{Tal função é conhecida como \ingles{one-time pad} na literatura.}. Na prática, porém, essa definição não é muito interessante, visto que gostaríamos de trabalhar com chaves pequenas (algumas centenas de bits) e mensagens de tamanho arbitrário\footnote{Embora o termo arbitrário seja utilizado, na prática espera-se que esse número seja muito inferior a $2^n$}. Essa necessidade entra diretamente em conflito com o seguinte teorema:
+No caso em que $n > m$, é possível criar um par $(Enc, Dec)$ perfeitamente seguro: as funções $Enc(M,K) = M_1 \oplus K_1 M_2 \oplus K_2 \dots M_m \oplus K_m$ e $Dec(X,K) = X_1 \oplus K_1 X_2 \oplus K_2 \dots X_m \oplus K_m$ satisfazem a definição\footnote{Tal função é conhecida como \ingles{one-time pad} na literatura.}. Na prática, porém, essa definição não é muito interessante, visto que gostaríamos de trabalhar com chaves pequenas (algumas centenas de bits) e mensagens de tamanho arbitrário\footnote{Embora o termo arbitrário seja utilizado, na prática espera-se que esse número seja muito inferior a $2^n$}. Essa necessidade entra diretamente em conflito com o seguinte teorema:
 
 \begin{teorema}
-Se $m > n$ então nenhum $(Enc, Dec)$ é perfeitamente seguro.
+Se $m > n$, isto é, se o tamanho da chave for superior ao tamanho da mensagem, então nenhum $(Enc, Dec)$ é perfeitamente seguro.
 \end{teorema}
 
-A prova, embora simples, é omitida por estar fora do escopo do trabalho e pode ser consultada nas referências indicadas. Para contornar esse teorema poderoso, adicionaremos a restrição de que $ADV$ deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$) e definiremos uma classe de funções com a qual trabalharemos.
+A prova, embora simples, é omitida por estar fora do escopo do trabalho e pode ser consultada nas referências indicadas. Para contornar esse teorema poderoso, adicionaremos a restrição de que o adversário deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$), isto é, ele possui um tempo consideravalmente limitado para executar. Com esta restrição adicional, pode-se criar algoritmos (geradores de função) que, dado um chave, produzam uma função capaz de mapear mensagens para strings de modo aleatório, sem permitir que tais adversários limitados possam descobrir algo sobre a chave. A definição dessa idéia é um tanto complexa, e é apresentada aqui para o leitor interessado.
 
 \begin{definicao}
 Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada $n\in\mathbb{N}$ e a cada $k \in \{0,1\}^n$ uma função $F_k: \{0,1\}^n \to \{0,1\}^n$ de modo que exista um algoritmo com tempo de execução polinomial (em $n$) o qual compute $F_k(x)$.
-\end{definicao}
 
-Exige-se que tais geradores de função sejam \keyword{pseudo-aleatórios}, isto é, um adversário não consegue distinguir entre um $F_k$ (para um $k$ escolhido aleatoriamente) e uma função escolhida aleatoriamente $f:\{0,1\}^n \to \{0,1\}^n$ com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
+Um gerador de funções é \keyword{pseudo-aleatório} se um adversário não consegue distinguir entre um $F_k$ (para um $k$ escolhido aleatoriamente) e uma função $f:\{0,1\}^n \to \{0,1\}^n$ escolhida aleatoriamente  com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
+\end{definicao}
 
 Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existam é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso. De fato, uma condição necessária para a segurança de toda criptografia moderna é que $P \not= NP$, embora essa não seja uma condição suficiente.\footnote{O leitor intrigado por essa observação pode notar que não basta ser difícil quebrar um sistema criptográfico no pior caso, e é essa noção que é capturada pelo problema $P \not= NP$. É possível construir um sistema criptográfico para o qual o problema de distiguir $Enc$ é NP-Completo, embora exista um algoritmo eficiente que o resolva em $99\%$ dos casos~\cite{Goldreich:2006:FCV:1202577}.}
 
@@ -207,7 +207,9 @@ Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções
 \section{Curvas Elípticas}
 Até esse momento, assumiu-se que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar alguns poucos parâmetros através de um canal inseguro e, ao final da comunicação, ambas compartilhem uma mesma chave desconhecida a qualquer adversário manipulando o canal?
 
-Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção.
+Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção. 
+
+Uma curva elíptica será definida como um conjunto de pontos com algumas propriedades. Ao contrário de pontos habituais, porém, as coordenadas dos pontos da curva não são número reais, mas sim inteiros de um certo conjunto, com algumas operações e propriedades. Esse tipo de conjunto é definido a seguir.
 
 \begin{definicao}
     Um conjunto $F$ com um elemento $0$ e duas operações binárias $+$ e $\cdot$ é um \keyword{corpo finito} (\ingles{finite field}, ou \ingles{Galois field}) se as seguintes condições forem verdadeiras:
@@ -225,11 +227,13 @@ Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria 
     \end{enumerate}
 \end{definicao}
 
+O leitor certamente está habituado com tais conjuntos: os números reais com as operações de soma e multiplicação habituais satisfaz a definição, exceto pela primeira condição. Um outro conjunto menos conhecido, o qual será utilizado nos conceitos de curvas elípticas, também possui todas as propriedades necessárias:
+
 \begin{definicao}
-    Dado um número primo $p$, o conjunto dos números inteiros módulo p com as operações habituais de soma e multiplicação é um corpo finito, denotado $GF(p) = \{0, 1, \ldots, p-1\}$.
+    Dado um número primo $p$, o conjunto dos números inteiros módulo $p$ com as operações habituais de soma e multiplicação módulo $p$ é um corpo finito, denotado $GF(p) = \{0, 1, \ldots, p-1\}$.
 \end{definicao}
 
-    De modo similar, para um primo $q$ e um inteiro positivo $n$, pode-se definir um corpo finito $GF(q^m)$ com o uso de polinomiais, embora sua definição precisa seja omitida por estar fora do escopo deste trabalho.
+Menciona-se que, para um primo $q$ e um inteiro positivo $n$, pode-se definir um corpo finito $GF(q^m)$ com o uso de polinomiais, embora sua definição precisa seja omitida por estar fora do escopo deste trabalho. Está observação é importante pois tal conjunto pode ser usado como alternativa à $GF(p)$ em curvas elípticas. Dado um desses conjuntos, os pontos de uma curva elíptica possuem duas coordenadas ($x$ e $y$), ambas em tal conjunto. Além disso, $x$ e $y$ estão relacionados por algum equação, conforme a definição a seguir.Por razões discutidas mais adiante, será interessante poder somar dois pontos, o que requer um ponto especial que funcione como o zero da adição, chamado de ponto no infinito.
 
 \begin{definicao}
 Uma curva elíptica $E$ sobre o corpo finito $GF(p)$, onde $p$ é um número primo ímpar, é o conjunto: 
@@ -254,6 +258,8 @@ Uma curva elíptica $E$ sobre o corpo finito $GF(2^m)$, é o conjunto:
 	onde $a$ e $b$ são constantes relacionadas a curva e $O$ é chamado de ponto no infinito.
 \end{definicao}
 
+O tamanho do conjunto que define a curva será importante a diante, portanto recebe um nome especial.
+
 \begin{definicao}
 	O número de elementos de uma curva elíptica $E$ é chamado de \keyword{ordem} de $E$ e é denotado por $\#E(GF(q))$.
 \end{definicao}
@@ -261,6 +267,10 @@ Uma curva elíptica $E$ sobre o corpo finito $GF(2^m)$, é o conjunto:
 Para ilustrar as definições, considere a curva $E$ dada por \[y^2 = x^3 + x + 5\] sobre $GF(13)$. Os pontos de $E$ são:
 \[ \{O, (1,4), (1,9), (3,6), (3,7), (8,5), (8,8), (10,0), (11,4), (11,9) \} \]
 e $\#E(GF(13)) = 10$.
+
+
+A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura~\ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
+%Dá uma olhada na matplotlib   /numpy
 
 \begin{figure}[ht]
 \begin{center}
@@ -279,8 +289,13 @@ e $\#E(GF(13)) = 10$.
 \end{center}
 \end{figure}
 
-A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura~\ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
-%Dá uma olhada na matplotlib   /numpy
+	Os próximos parágrafos são destinados a definir uma operação de soma ($+$) para pontos de uma curva elíptica, o que viabilizará a definição de um problema conhecido como o logaritmo discreto em curvas elípticas. Tal problema é o cerne da criptografia de curvas elípticas, portanto merece uma explicação detalhada.
+    
+    Intuitivamente, tem-se que a soma de dois pontos $P_1 + P_2$ é o ponto $P_3$ com a propriedade que $P_1$, $P_2$ e $-P_3$ são colineares. Para um ponto $P = (x, y)$, define-se $-P = (x, -y)$. Por clareza, este trabalho define a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme~\cite{IEE1363}. 
+    
+    As linhas~\ref{li:sum-zero-begin}--~\ref{li:sum-zero-end} tratam o ponto no infinito, $O$, como o elementro neutro da operação. No caso em que os pontos não possuam a mesma coordenada $x$, as linhas~\ref{li:sum-lambda1-begin}--~\ref{li:sum-lambda1-end} calculam o coeficiente angular da reta secante que passa por $P_1$ e $P_2$, enquanto calcula-se o coeficiente da reta tangente a curva em um dos pontos quando $P_1 = P_2$ (linha~\ref{li:sum-lambda2}). Caso os pontos difiram apenas na coordenada $y$, então temos $P_1 = -P_2$ e o algoritmo retorna o elemento neutro (linhas~\ref{li:sum-sumzero-begin}--~\ref{li:sum-sumzero-end}). Por fim, as linhas~\ref{li:sum-final-begin}--~\ref{li:sum-final-end} utilizam o coeficiente mencionado anteriormente para calcular as coordenadas de $P_3$.
+
+	Note que, embora os termos como coefienciente angular e reta tangente sejam utilizados, os quais estão normalmente relacionados a funções sobre o domínio dos reais, o algoritmo opera sobre $GF(13)$, logo todas as operações de soma, subtração, multiplicação ou divisão que aparecem no algoritmo \proc{Soma} devem ser realizadas $mod\; p$. Isso ilustra uma das primeiras dificuldades de implementação de algoritmos relacionados a curvas elípticas: as operações de multiplicação e inversão em $GF(p)$ não são triviais.
 
     \begin{codebox}
 	\label{alg:sum_over_ECC}
@@ -313,9 +328,9 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
     \end{codebox}
 
 
-	Uma operação de soma ($+$) pode ser definida sobre uma curva elíptica de modo a torná-la um grupo e, assim, poderemos definir o problema do logaritmo discreto sobre esse conjunto. Intuitivamente, tem-se que a soma de dois pontos $P_1 + P_2$ é o ponto $P_3$ com a propriedade que $P_1$, $P_2$ e $-P_3$ são colineares. Para um ponto $P = (x, y)$, define-se $-P = (x, -y)$. Por clareza, definimos a soma de dois elementos de $E$ para o caso de $GF(p)$ através do algoritmo \proc{Soma}, conforme~\cite{IEE1363}.  As linhas~\ref{li:sum-zero-begin}--~\ref{li:sum-zero-end} tratam o ponto no infinito, $O$, como o elementro neutro da operação. No caso em que os pontos não possuam a mesma coordenada $x$, as linhas~\ref{li:sum-lambda1-begin}--~\ref{li:sum-lambda1-end} calculam o coeficiente angular da reta secante que passa por $P_1$ e $P_2$, enquanto calcula-se o coeficiente da reta tangente a curva em um dos pontos quando $P_1 = P_2$ (linha~\ref{li:sum-lambda2}). Caso os pontos difiram apenas na coordenada $y$, então temos $P_1 = -P_2$ e o algoritmo retorna o elemento neutro (linhas~\ref{li:sum-sumzero-begin}--~\ref{li:sum-sumzero-end}). Por fim, as linhas~\ref{li:sum-final-begin}--~\ref{li:sum-final-end} utilizam o coeficiente mencionado anteriormente para calcular as coordenadas de $P_3$.
 
-	Note que, embora os termos como coefienciente angular e reta tangente sejam utilizados, os quais estão normalmente relacionados a funções sobre o domínio dos reais, o algoritmo opera sobre $GF(13)$, logo todas as operações de soma, subtração, multiplicação ou divisão que aparecem no algoritmo \proc{Soma} devem ser realizadas $mod\; p$. Isso ilustra uma das primeiras dificuldades de implementação de algoritmos relacionados a curvas elípticas: as operações de multiplicação e inversão em $GF(p)$ não são triviais.
+    Com isto em mente, a intuição dada pelo domínio real ajuda a visualizar a soma em $GF(p)$. Utilizando a mesma curva do exemplo anterior, a figura~\ref{fig:ecc_example_addition} ilustra \emph{informalmente} a adição dos pontos $P_1 = (10,0)$ e $P_2= (8,5)$. Primeiro, a reta que sai de $P_1$ e passa por $P_2$ é traçada. Quando esta reta atinge os limites do gráfico, isto é, uma de suas coordenadas atinge o valor $13$ (ou $0$), pode-se entender que a operação de módulo é aplicada (note que a operação de módulo é aplicada apenas na coordenada que atingiu um valor inteiro), efetivamente continuando a reta no lado oposto do gráfico. Tal procedimento é repetido até que um ponto de $E$, aqui chamado de $-P_3$, seja encontrado, de modo que $P_1$, $P_2$ e $-P_3$ sejam colineares. A soma de $P_1$ e $P_2$ é dada então por $P_3$. Note ainda que, caso dois pontos tenham a mesma coordenada $x$, a reta que passa por ambos está na vertical e, portanto, nunca tocará um terceiro ponto de $E$ que não seja o ponto no infinito, $O$.
+
 
 \begin{figure}[ht]
 \begin{center}
@@ -324,8 +339,6 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 \label{fig:ecc_example_addition}
 \end{center}
 \end{figure}
-
-Com isto em mente, a intuição dada pelo domínio real ajuda a visualizar a soma em $GF(p)$. Utilizando a mesma curva do exemplo anterior, a figura~\ref{fig:ecc_example_addition} ilustra a adição dos pontos $P_1 = (10,0)$ e $P_2= (8,5)$. Primeiro, a reta que sai de $P_1$ e passa por $P_2$ é traçada. Quando esta reta atinge os limites do gráfico, isto é, uma de suas coordenadas atinge o valor $13$ (ou $0$), pode-se entender que a operação de módulo é aplicada, efetivamente continuando a reta no lado oposto do gráfico. Tal procedimento é repetido até que um ponto de $E$, aqui chamado de $-P_3$, seja encontrado, de modo que $P_1$, $P_2$ e $-P_3$ sejam colineares. A soma de $P_1$ e $P_2$ é dada então por $P_3$. Note ainda que, caso dois pontos tenham a mesma coordenada $x$, a reta que passa por ambos está na vertical e, portanto, nunca tocará um terceiro ponto de $E$ que não seja o ponto no infinito, $O$.
 
 Algebricamente, teríamos que:
 
@@ -351,7 +364,7 @@ Algebricamente, teríamos que:
 
 O que é equivalente às coordenadas de $P_3$ obtidas geometricamente.
 
-Como consequência da operação de adição, pode-se definir a multiplicação de um ponto por um escalar. Se $k \in \mathbb{Z}$ e $P \in E$, então: 
+Como consequência da operação de adição, pode-se definir a multiplicação de um ponto por um escalar, exatamente como se faz com inteiros: através de somas sucessivas. Se $k \in \mathbb{Z}$ e $P \in E$, então: 
 
  \begin{displaymath}
    kP = \left\{
