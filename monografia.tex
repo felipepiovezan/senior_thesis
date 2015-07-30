@@ -64,7 +64,7 @@
 
 \palavrasChave{eficiência energética, criptografia, otimização de código}
 
-\textAbstract{The realm of public-key (asymmetric) cryptography (PKC) is considered to be one the pillars of secure communicatio/n over the internet, since it includes user authentication, key enchange and digital signatures. PKC algorithms in use are mostly based in certain number-theoretic conjectures, like the difficulty of integer factorization or the difficulty of some discrete-log problem. The latter, when used in the elliptic curve setting, allows for shorter keys and signatures while maintaining the same security level of other algorithms, which is interesting in a resource constrained environment.
+\textAbstract{The realm of public-key (asymmetric) cryptography (PKC) is considered to be one the pillars of secure communication over the internet, since it includes user authentication, key exchange and digital signatures. PKC algorithms in use are mostly based in certain number-theoretic conjectures, like the difficulty of integer factorization or the difficulty of some discrete-log problem. The latter, when used in the elliptic curve setting, allows for shorter keys and signatures while maintaining the same security level of other algorithms, which is interesting in a resource constrained environment.
 	
 	During the development of the first asymmetric algorithms, most nodes in a network were either desktops or servers. Recently, however, the scale of the devices partaking in secure communations over the internet has been steadily decreasing: from laptops and cellphones to sensors and RFID tags, they all require a secure channel. This downscaling is responsible for new constraints on the processing power and battery supply available to each node, which directly conflicts with the fact that PKC algorithms are computationally expensive. What then is the best way to employ those algorithms in such constrained devices? By means of simulations, this work will evaluate the amount of energy spent in the memory system when processors execute elliptic curve algorithms, as well as the impact of certain code optimization techniques on energy efficiency.
 }
@@ -99,7 +99,7 @@ Os protocolos utilizados para comunicação segura, sejam eles aqueles utilizados 
 
 De modo geral, observa-se que algoritmos simétricos possuem implementações extremamente simples, podendo ser otimizados para diferentes configurações de processadores. É o caso do \ingles{Rijndael}~\cite{daemen1999aes}, vencedor da competição que elegeu o \ingles{Advanced Encryption Standard} (AES), cuja implementação pode ser feita executando-se operações matemáticas ou com o uso de \ingles{look-up tables} que variam de tamanho: 256 bytes, 1KB ou 4KB\@. Desse modo, permite-se a execução do AES em processadores com diferentes configurações de memória. Tamanha flexibilidade não ocorre por acaso: o algoritmo foi desenvolvido com esse objetivo, visto que a competição incluiu critérios como quantidade de memória requerida, eficiência computacional e simplicidade para avaliação dos candidatos~\cite{nechvatal2000report}.
 
-Por outro lado, os algoritmos assimétricos possuem implementações complexas pela natureza do problema que propõem: muitos deles estão associados ao uso de conjecturas da Teoria dos Números sob domínios de ordem muito grande, isto é, trabalham com conjuntos cuja cardinaliade precisa de centenas ou até milhares de bits para ser representada. Um dos algoritmos mais famosos dessa classe, o RSA, é baseado na dificuldade da fatoração de inteiros e trabalha com números na ordem de 1024 bits. Pode-se perceber, então, um dos possíveis inconvenientes que esse algoritmo trás: a aritmética de números desse tamanho não é trivial de ser implementada, principalmente se considerarmos que processadores utilizados em, por exemplo, redes de sensores trabalham com registradores de 8 ou 16 bits\footnote{É o caso do \ingles{Atmel ATmega} (8 bits) ou do \ingles{Texas Instruments MSP430} (16 bits)}.
+Por outro lado, os algoritmos assimétricos possuem implementações complexas pela natureza do problema com que lidam: muitos deles estão associados ao uso de conjecturas da Teoria dos Números sob domínios de ordem muito grande, isto é, trabalham com conjuntos cuja cardinaliade precisa de centenas ou até milhares de bits para ser representada. Um dos algoritmos mais famosos dessa classe, o RSA, é baseado na dificuldade da fatoração de inteiros e trabalha com números na ordem de 1024 bits. Pode-se perceber, então, um dos possíveis inconvenientes que esse algoritmo traz: a aritmética de números desse tamanho não é trivial de ser implementada, principalmente se considerarmos que processadores utilizados em, por exemplo, redes de sensores trabalham com registradores de 8 ou 16 bits\footnote{É o caso do \ingles{Atmel ATmega} (8 bits) ou do \ingles{Texas Instruments MSP430} (16 bits)}.
 
 Nesse cenário, as técnicas baseadas em curvas elípticas (ECC) mostraram-se muito interessantes por propiciarem um mesmo nível de segurança para um menor tamanho de chave. De acordo com~\cite{LenstraSelectingKeys}, a equivalência entre os tamanhos de chaves para as duas técnicas pode ser resumida na Tabela~\ref{tab:RSAxECC}. Pode-se notar que a diferença chega próxima de uma ordem de magnitude em muitos casos e, de fato, este é um dos argumentos utilizados pela RFC que adiciona algoritmos de ECC ao protocolo TLS~\cite{Blake-wilson06ellipticcurve}.
 
@@ -117,13 +117,13 @@ ECC             & RSA             \\ \hline
 \label{tab:RSAxECC}
 \end{table}
 
-Apesar de os algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação eficiente de criptografia de chaves públicas em ambientes com recursos limitados necessitou de muitos esforços da academia, conforme relatado por~\cite {Wenger:2013}. Tamanho investimento é justificado pelo crescente número de aplicações que executam em tais ambientes, como \ingles{smart cards}, redes de sensores sem fio ou etiquetas RFID\@. Para o caso de redes de sensores com processadores de 8 bits, apenas em 2004 demonstrou-se a viabilidade do uso de algoritmos de ECC em tais plataformas~\cite{first8bits:Gura}. De modo similar, a primeira implementação em hardware com consumo energético baixo o suficiente para ser alimentado passivamente foi demonstrada em 2008~\cite{Hein:2009}. Atualmente, diversos dispositivos médicos, como marcapasos, são configurados através de um canal sem fio e possuem longevidade de 5 a 15 anos. Nesse cenário, algoritmos de curvas elípticas são empregados por proverem a seguraça e eficiência necessárias~\cite{fan2013low}.
+Apesar de os algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação eficiente de criptografia de chaves públicas em ambientes com recursos limitados necessitou de muitos esforços da academia, conforme relatado por~\cite {Wenger:2013}. Tamanho investimento é justificado pelo crescente número de aplicações que executam em tais ambientes, como \ingles{smart cards}, redes de sensores sem fio ou etiquetas RFID\@. Para o caso de redes de sensores com processadores de 8 bits, apenas em 2004 demonstrou-se a viabilidade do uso de algoritmos de ECC em tais plataformas~\cite{first8bits:Gura}. De modo similar, a primeira implementação em hardware com consumo energético baixo o suficiente para ser alimentado passivamente foi demonstrada em 2008~\cite{Hein:2009}. Atualmente, diversos dispositivos médicos, como marcapassos, são configurados através de um canal sem fio e possuem longevidade de 5 a 15 anos. Nesse cenário, algoritmos de curvas elípticas são empregados por proverem a seguraça e eficiência necessárias~\cite{fan2013low}.
 
 
 \section{Motivação e trabalho proposto}
 Não é incomum em aplicações embarcadas que uma parcela considerável da computação seja efetuada por circuitos especializados, devido às demandas de desempenho e eficiência. De fato, segundo~\cite{Dally:2008}, um ASIC (\ingles{application-specific integrated circuit}) pode atingir uma eficiência de $5pJ/op$ na tecnologia CMOS de 90-nm. Por outro lado, processadores embarcados altamente eficientes atingem apenas $250 pJ/op$, uma perda de 50x. É evidente, então, a troca da flexibilidade de um processador de propósito geral pela eficiência propiciada por ASICs.
 
-Nota-se, porém, que o tempo de projeto de um ASIC pode ser considerável e que muitas aplicações não se adequam a inflexibilidade propiciada por essa solução. Soluções flexíveis são necessárias em classes de problemas onde o desenvolvimento de novos algoritmos ou o surgimento repentino de uma demanda inesperada são comuns. Em criptografia, um exemplo de tal demanda pode ser a descoberta de um novo ataque a algum cifrador, o que poderia requerer o aumento de algum parâmetro, como tamanho de chave, ou até mesmo a troca por outro algoritmo, o que é facilitado em implementações via software. Pode-se citar um caso onde uma especificação de hardware não acompanhou a evolução de algoritmos criptográficos: em 2011, o conjunto de instruções ARMv8 para processadores ARM foi anunciado, trazendo instruções específicas para os algoritmos SHA1 e SHA2. O primeiro foi considerado inseguro e seu uso descontinuado a partir de 2010, enquanto o segundo já teve seu sucessor escolhido via competição em 2012~\cite{sha3}.
+Nota-se, porém, que o tempo de projeto de um ASIC pode ser considerável e que muitas aplicações não se adequam à inflexibilidade propiciada por essa solução. Soluções flexíveis são necessárias em classes de problemas onde o desenvolvimento de novos algoritmos ou o surgimento repentino de uma demanda inesperada são comuns. Em criptografia, um exemplo de tal demanda pode ser a descoberta de um novo ataque a algum cifrador, o que poderia requerer o aumento de algum parâmetro, como tamanho de chave, ou até mesmo a troca por outro algoritmo, o que é facilitado em implementações via software. Pode-se citar um caso onde uma especificação de hardware não acompanhou a evolução de algoritmos criptográficos: em 2011, o conjunto de instruções ARMv8 para processadores ARM foi anunciado, trazendo instruções específicas para os algoritmos SHA1 e SHA2. O primeiro foi considerado inseguro e seu uso descontinuado a partir de 2010, enquanto o segundo já teve seu sucessor escolhido via competição em 2012~\cite{sha3}.
 
 A busca por soluções eficientes em software para criptografia, então, não deve ser desconsiderada. Em se tratanto de eficiência energética em um processador embarcado, os fatores mais impactantes são ilustrados pela Figura~\ref{fig:energy_usage}. Observa-se que o fornecimento de dados e instruções pode requerer cerca de $70\%$ da energia total consumida, tornando-se alvos importantes para otimizações. Nota-se que a Figura~\ref{fig:energy_usage} refere-se ao consumo de energia nas memórias integradas junto ao processador (caches) e, essencialmente, independe da taxa de faltas (embora dependa do número de acessos e do tamanho das caches). Por outro lado, o consumo em memória principal (não computado na Figura 1) é bastante significativo e dependente da taxa de faltas nas caches. Isso motiva o uso de otimizações de código capazes de reduzir a taxa de faltas a níveis inferiores aos obtidos com a mera exploração de localidade espacial e temporal.
 
@@ -147,7 +147,7 @@ Este capítulo pretende introduzir o leitor aos conceitos básicos de criptografia
 Em seguida, o conceito de curva elíptica é apresentado, assim como operações necessárias à definição do logaritmo discreto. Um conhecimento básico de teoria de grupos é assumido, embora os conceitos mais importantes sejam revisados. Muitos dos exemplos e definições utilizados são baseados no anexo A do padrão IEEE 1363,~\cite{IEE1363}. Conclui-se o capítulo mostrando como todos os conceitos definidos podem ser combinados para formar um método seguro de troca de chaves, o que é conhecido como a versão de curvas elípticas de Diffie-Hellman, o qual é utilizado em todos os experimentos desse trabalho.
 
 \section{Sessões seguras}
-
+\label{sec:secure_sessions}
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.50]{images/crypto_model.png}
@@ -193,7 +193,7 @@ No caso em que $n > m$, é possível criar um par $(Enc, Dec)$ perfeitamente segur
 Se $m > n$, isto é, se o tamanho da chave for superior ao tamanho da mensagem, então nenhum $(Enc, Dec)$ é perfeitamente seguro.
 \end{teorema}
 
-A prova, embora simples, é omitida por estar fora do escopo do trabalho e pode ser consultada nas referências indicadas. Para contornar esse teorema poderoso, adicionaremos a restrição de que o adversário deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$), isto é, ele possui um tempo consideravalmente limitado para executar. Com esta restrição adicional, pode-se criar algoritmos (geradores de função) que, dado um chave, produzam uma função capaz de mapear mensagens para strings de modo aleatório, sem permitir que tais adversários limitados possam descobrir algo sobre a chave. A definição dessa idéia é um tanto complexa, e é apresentada aqui para o leitor interessado.
+A prova, embora simples, é omitida por estar fora do escopo do trabalho e pode ser consultada nas referências indicadas. Para contornar esse teorema poderoso, adicionaremos a restrição de que o adversário deve ser um algoritmo o qual executa em tempo polinomial (em relação a $n$), isto é, ele possui um tempo consideravalmente limitado para executar. Com esta restrição adicional, pode-se criar algoritmos (geradores de função) que, dado um chave, produzam uma função capaz de mapear mensagens para strings de modo aleatório, sem permitir que tais adversários limitados possam descobrir algo sobre a chave. A definição formal dessa idéia é um tanto complexa, e é apresentada aqui para o leitor interessado.
 
 \begin{definicao}
 Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada $n\in\mathbb{N}$ e a cada $k \in \{0,1\}^n$ uma função $F_k: \{0,1\}^n \to \{0,1\}^n$ de modo que exista um algoritmo com tempo de execução polinomial (em $n$) o qual compute $F_k(x)$.
@@ -201,13 +201,13 @@ Um \keyword{gerador de funções} (\ingles{Function Generator}) $F$ associa a cada
 Um gerador de funções é \keyword{pseudo-aleatório} se um adversário não consegue distinguir entre um $F_k$ (para um $k$ escolhido aleatoriamente) e uma função $f:\{0,1\}^n \to \{0,1\}^n$ escolhida aleatoriamente  com probabilidade superior a $1/n^c$ para todo $c$ e para $n$ suficientemente grande.
 \end{definicao}
 
-Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo as que funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existam é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso. De fato, uma condição necessária para a segurança de toda criptografia moderna é que $P \not= NP$, embora essa não seja uma condição suficiente.\footnote{O leitor intrigado por essa observação pode notar que não basta ser difícil quebrar um sistema criptográfico no pior caso, e é essa noção que é capturada pelo problema $P \not= NP$. É possível construir um sistema criptográfico para o qual o problema de distiguir $Enc$ é NP-Completo, embora exista um algoritmo eficiente que o resolva em $99\%$ dos casos~\cite{Goldreich:2006:FCV:1202577}.}
+Assume-se que os algoritmos $AES$ e $DES$ se comportem como geradores de funções pseudo-aleatórios\footnote{Um pequeno abuso é feito nessa afirmação, visto que esses algoritmos são definidos para alguns poucos valores de $n$.}. O primeiro, por exemplo, associa uma chave $k$ de 128 (196 ou 256) bits com a função $AES_k$ e é esta função que $A$ tipicamente usa para enviar sua mensagem para $B$. De fato, esses algoritmos são construídos de modo que as funções geradas sejam também permutações, permitindo que se utilize $Enc = AES_k$ e $Dec = AES^{-1}_k$. A razão pela qual simplesmente \emph{assumimos} que geradores de função pseudo-aleatórios existam é devido ao fato dessa ser uma afirmação mais forte que $P \not= NP$, e somos incapazes de provar isso. De fato, uma condição necessária para a segurança de toda a criptografia moderna é que $P \not= NP$, embora essa não seja uma condição suficiente.\footnote{O leitor intrigado por essa observação pode notar que não basta ser difícil quebrar um sistema criptográfico no pior caso, e é essa noção que é capturada pelo problema $P \not= NP$. É possível construir um sistema criptográfico para o qual o problema de distinguir $Enc$ é NP-Completo, embora exista um algoritmo eficiente que o resolva em $99\%$ dos casos~\cite{Goldreich:2006:FCV:1202577}.}
 
 
 \section{Curvas Elípticas}
 Até esse momento, assumiu-se que $A$ e $B$ haviam previamente combinado uma chave para efetuar a comunição segura. Tal hipótese pode ser suficiente para ambientes em que poucos pares precisam se comunicar, porém não é adequada para a maioria dos outros cenários. Essa observação motiva o principal objetivo da criptografia assimétrica: como fazer com que duas pessoas possam trocar alguns poucos parâmetros através de um canal inseguro e, ao final da comunicação, ambas compartilhem uma mesma chave desconhecida a qualquer adversário manipulando o canal?
 
-Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção. 
+Atualmente, esse objetivo é atingido com o uso de algumas conjecturas da teoria dos números. Uma delas é a dificuldade (de alguma versão) do problema do logaritmo discreto. Neste trabalho, estamos interessados na variação de curvas elípticas do problema, o assunto da presente seção. Definir-se-á o significado de uma curva elíptica, bem como operações que podem ser realizadas em seus elementos e, por fim, o que é o logaritmo discreto neste contexto.
 
 Uma curva elíptica será definida como um conjunto de pontos com algumas propriedades. Ao contrário de pontos habituais, porém, as coordenadas dos pontos da curva não são número reais, mas sim inteiros de um certo conjunto, com algumas operações e propriedades. Esse tipo de conjunto é definido a seguir.
 
@@ -266,7 +266,8 @@ O tamanho do conjunto que define a curva será importante a diante, portanto rece
 
 Para ilustrar as definições, considere a curva $E$ dada por \[y^2 = x^3 + x + 5\] sobre $GF(13)$. Os pontos de $E$ são:
 \[ \{O, (1,4), (1,9), (3,6), (3,7), (8,5), (8,8), (10,0), (11,4), (11,9) \} \]
-e $\#E(GF(13)) = 10$.
+
+Além disso, $\#E(GF(13)) = 10$.
 
 
 A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ e, para comparação, a mesma curva é desenhada sobre os reais na figura~\ref{fig:ecc_example_overR}. Como se pode observar, a troca de domínio muda consideravelmente a aparência da curva.
@@ -275,7 +276,7 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.50]{images/ecc_example_overGF.png}
-\caption{Exemplo de uma curva elíptica sobre $GF(13)$}
+\caption{Conjunto de pontos que representa uma curva elíptica sobre $GF(13)$}
 \label{fig:ecc_example_overGF}
 \end{center}
 \end{figure}
@@ -284,7 +285,7 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.50]{images/ecc_example_overR.png}
-\caption{Exemplo de uma curva elíptica sobre $\mathbb{R}$}
+\caption{Conjunto de pontos que representa uma curva elíptica sobre $\mathbb{R}$}
 \label{fig:ecc_example_overR}
 \end{center}
 \end{figure}
@@ -295,7 +296,7 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
     
     As linhas~\ref{li:sum-zero-begin}--~\ref{li:sum-zero-end} tratam o ponto no infinito, $O$, como o elementro neutro da operação. No caso em que os pontos não possuam a mesma coordenada $x$, as linhas~\ref{li:sum-lambda1-begin}--~\ref{li:sum-lambda1-end} calculam o coeficiente angular da reta secante que passa por $P_1$ e $P_2$, enquanto calcula-se o coeficiente da reta tangente a curva em um dos pontos quando $P_1 = P_2$ (linha~\ref{li:sum-lambda2}). Caso os pontos difiram apenas na coordenada $y$, então temos $P_1 = -P_2$ e o algoritmo retorna o elemento neutro (linhas~\ref{li:sum-sumzero-begin}--~\ref{li:sum-sumzero-end}). Por fim, as linhas~\ref{li:sum-final-begin}--~\ref{li:sum-final-end} utilizam o coeficiente mencionado anteriormente para calcular as coordenadas de $P_3$.
 
-	Note que, embora os termos como coefienciente angular e reta tangente sejam utilizados, os quais estão normalmente relacionados a funções sobre o domínio dos reais, o algoritmo opera sobre $GF(13)$, logo todas as operações de soma, subtração, multiplicação ou divisão que aparecem no algoritmo \proc{Soma} devem ser realizadas $mod\; p$. Isso ilustra uma das primeiras dificuldades de implementação de algoritmos relacionados a curvas elípticas: as operações de multiplicação e inversão em $GF(p)$ não são triviais.
+	Note que, embora termos como coeficiente angular e reta tangente sejam utilizados, os quais estão normalmente relacionados a funções sobre o domínio dos reais, o algoritmo opera sobre $GF(p)$, logo todas as operações de soma, subtração, multiplicação ou divisão que aparecem no algoritmo \proc{Soma} devem ser realizadas $mod\; p$. Isso ilustra uma das primeiras dificuldades de implementação de algoritmos relacionados a curvas elípticas: as operações de multiplicação e inversão em $GF(p)$ não são triviais.
 
     \begin{codebox}
 	\label{alg:sum_over_ECC}
@@ -329,7 +330,7 @@ A figura~\ref{fig:ecc_example_overGF} ilustra os pontos da curva sobre $GF(13)$ 
 
 
 
-    Com isto em mente, a intuição dada pelo domínio real ajuda a visualizar a soma em $GF(p)$. Utilizando a mesma curva do exemplo anterior, a figura~\ref{fig:ecc_example_addition} ilustra \emph{informalmente} a adição dos pontos $P_1 = (10,0)$ e $P_2= (8,5)$. Primeiro, a reta que sai de $P_1$ e passa por $P_2$ é traçada. Quando esta reta atinge os limites do gráfico, isto é, uma de suas coordenadas atinge o valor $13$ (ou $0$), pode-se entender que a operação de módulo é aplicada (note que a operação de módulo é aplicada apenas na coordenada que atingiu um valor inteiro), efetivamente continuando a reta no lado oposto do gráfico. Tal procedimento é repetido até que um ponto de $E$, aqui chamado de $-P_3$, seja encontrado, de modo que $P_1$, $P_2$ e $-P_3$ sejam colineares. A soma de $P_1$ e $P_2$ é dada então por $P_3$. Note ainda que, caso dois pontos tenham a mesma coordenada $x$, a reta que passa por ambos está na vertical e, portanto, nunca tocará um terceiro ponto de $E$ que não seja o ponto no infinito, $O$.
+    Com isto em mente, a intuição dada pelo domínio real ajuda a visualizar a soma em $GF(p)$, onde a idéia de colinearidade ainda pode ser representada graficamente para fins didáticos. Utilizando a mesma curva do exemplo anterior, a figura~\ref{fig:ecc_example_addition} ilustra \emph{informalmente} a adição dos pontos $P_1 = (10,0)$ e $P_2= (8,5)$. Primeiro, a reta que sai de $P_1$ e passa por $P_2$ é traçada. Quando esta reta atinge os limites do gráfico, isto é, uma de suas coordenadas atinge o valor $13$ (ou $0$), pode-se entender que a operação de módulo é aplicada (note que a operação de módulo é aplicada apenas na coordenada que atingiu um valor inteiro), efetivamente continuando a reta no lado oposto do gráfico. Tal procedimento é repetido até que um ponto de $E$, aqui chamado de $-P_3$, seja encontrado, de modo que $P_1$, $P_2$ e $-P_3$ sejam colineares. A soma de $P_1$ e $P_2$ é dada então por $P_3$. Note ainda que, caso dois pontos tenham a mesma coordenada $x$, a reta que passa por ambos está na vertical e, portanto, nunca tocará um terceiro ponto de $E$ que não seja o ponto no infinito, $O$.
 
 
 \begin{figure}[ht]
@@ -376,37 +377,43 @@ Como consequência da operação de adição, pode-se definir a multiplicação de um p
    \right.
 \end{displaymath} 
 
+Um observação importante é a de que, dado um ponto da curva, pode-se somá-lo repetidamente até que o elemento neutro $O$ seja obtido. Isto acontece para qualquer ponto da curva e a quantidade de adições realizadas recebe um nome especial.
+
 \begin{definicao}
 A \keyword{ordem} de um ponto $P$ em uma curva elíptica $E$ é o menor inteiro positivo $r$ tal que \[rP = O\]
 \end{definicao}
 
-Da álgebra, tem-se que a ordem de um ponto sempre existe e divide a ordem da curva, $\#E(GF(p))$. Além disso, se $k$ e $l$ são inteiros, então $kP = lP$ se, e somente se, $k \equiv l \quad mod\; p$.
+Representa-se o conjunto formado pela repetida soma de um ponto $P$ como $\langle P \rangle = \{0, P, 2P, \dots (n-1)P\}$. Note que este é um conjunto finito.
 
-Pode-se agora definir o logaritmo discreto de um ponto em uma curva elíptica:
+De um resultado encontrado na Álgebra, tem-se que a ordem de um ponto sempre existe e divide a ordem da curva, $\#E(GF(p))$. Além disso, se $k$ e $l$ são inteiros, então $kP = lP$ se, e somente se, $k \equiv l \quad mod\; p$.
+
+Pode-se agora definir o logaritmo discreto de um ponto em uma curva elíptica, porém é interessaante refletir sobre o logaritmo tradicional primeiro: enquanto $log_b x$ responde a pergunta de quantas vezes $b$ deve ser \textbf{multiplicado} por ele mesmo até que se encontre $x$, o logaritmo discreto de $P$ em relação a $G$ trabalha com quantas vezes precisa-se \textbf{somar} $G$ até que se encontre $P$. Enquanto no logaritmo tradicional essa pergunta está sempre bem definida (e possui resposta) para valores positivos de $b$ e $x$, o leitor pode se perguntar se o mesmo é válido para todos os valores de $G$ e $P$. A resposta é negativa, embora existam condições o envolvendo os conceitos de ordem de ponto as quais permitem resposta afirmativa.
 
 \begin{definicao}
 	\label{def:logdiscreto}
 Suponha que um ponto $G$ em uma curva $E$ tenha ordem $r$, onde $r^2$ não divida a ordem da curva $\#E(GF(p))$. Então um ponto $P$ satisfaz $P = lG$ para algum $l$ se, e somente se, $rP = O$. O coeficiente $l$ é chamado de \keyword{logaritmo discreto} de $P$ em relação ao ponto base $G$.
 \end{definicao}
 
-Uma comparação com o logaritmo tradicional pode ser feita para o entendimento da definição: enquanto $log_b x$ responde a pergunta de quantas vezes $b$ deve ser \textbf{multiplicado} por ele mesmo até que se encontre $x$, o logaritmo discreto de $P$ trabalha com quantas vezes precisa-se \textbf{somar} $G$ até que se encontre $P$. Mais formalmente, tem-se~\cite{CryptoEncyc}:
+Em termos de um problema computacional, a formulação mais tradicional é dada a seguir~\cite{CryptoEncyc}:
 
 \begin{definicao}
 	Considere uma curva elíptica $E$ e um ponto $P\in E$ de ordem $n$. Dado um ponto $Q \in \langle P \rangle = \{0, P, 2P, \dots (n-1)P\} $, o \textbf{problema do logaritmo discreto sobre curvas elípticas} (ECDLP) consiste em computar $0 \leq l \leq n-1$ tal que $Q = lP$.
 \end{definicao}
 
-O algoritmo ingênuo para resolver uma instância de ECDLP consiste em computar os múltiplos de $P$ até que se encontre $Q$, o que pode levar até $n$ adições, impraticável para valores muito altos de $n$. Atualmente, os melhores algoritmos conhecidos são baseados em variações do método \ingles{Pollard's $\rho$} e executam em tempo $O(\sqrt{n})$~\cite{Pollard1}\cite{Pollard2}.
+O algoritmo ingênuo para resolver uma instância de ECDLP consiste em computar os múltiplos de $P$ (isto é, os membros de $\langle P \rangle$) até que se encontre $Q$, o que pode levar até $n$ adições, impraticável para valores muito altos de $n$. Atualmente, os melhores algoritmos conhecidos são baseados em variações do método \ingles{Pollard's $\rho$} e executam em tempo $O(\sqrt{n})$~\cite{Pollard1}\cite{Pollard2}.
 
 \section{\ingles{Elliptic Curve Diffie Hellman}}
+O leitor deve lembrar o cenário em que a seção~\ref{sec:secure_sessions} foi encerrada: $A$ e $B$ conseguem se comunicar de modo seguro dado que possuam uma chave secreta em comum. É exatamente esta pré-condição que será discutida a seguir, e não deve causar surpresa que o uso do ECDLP será crucial nessa tarefa.
+
 Em 1976,  Whitfield Diffie e Martin Hellman publicaram um método para a troca de chaves em um canal inseguro~\cite{DiffieHellman} o qual é baseado no problema do logaritmo discreto de inteiros em $GF(p)$. Embora não forneça autenticação (isto é, $A$ não possui garantias de que está de fato conversando com $B$\footnote{Nenhum dos protocolos apresentados aqui possuirá essa característica, visto que é algo difícil de ser alcançado sem uma Infraestrutura de Chaves Públicas (\ingles{Public Key Infrastructure}) previamente estabelecida. Atualmente, isto é feito através de certificados e autoridades certificadoras. Ainda assim, tais protocolos são realistas e são utilizados em versões autenticadas dos mesmos.}), ele é a base de protocolos autenticados. Pouco tempo depois, em 1978, a dificuldade da fatoração de números inteiros foi utilizada por R.L. Rivest, A. Shamir, e L. Adleman para atingir o mesmo propósito, no algoritmo conhecido como $RSA$~\cite{Rivest:1978:MOD:359340.359342}. Em 1985, dois autores propuseram independentemente o uso de curvas elípticas para a troca de chaves (\cite{koblitz1987elliptic},~\cite{Miller}) com tais métodos se popularizando a partir de 2004\footnote{Mais recentemente, as pesquisas em algoritmos baseados em Retículos (\ingles{Lattices}) ressurgiram, visto que essa é uma classe de algoritmos resistentes a ataques por computadores quânticos, ao contrário daqueles baseados em Diffie-Hellman e RSA. }.
 
 Descreve-se aqui um dos protocolos padronizados em~\cite{IEE1363}, lá referenciado por DL/ECKAS-DH1, ou \ingles{Discrete Logarithm and Elliptic Curve Key Agreement Scheme, Diffie-Hellman version}. $A$ e $B$ devem executar os seguintes passos para o estabelecimento de uma chave:
 
 \begin{enumerate}
 	\item Em comum acordo, estabelecer um conjunto de parâmetros do domínio a ser trabalhado: os coeficientes $a$ e $b$ da curva, o número primo $p$ e um ponto $G$ de ordem $r$.
-	\item Escolher um número inteiro aleatório $s$ no intervalo $[1, r-1]$ e computar o ponto $W = sG$. O par $(s,W)$ consiste da chave pública e privada, respectivamente.
-	\item Obter da outra parte a chave pública $W'$.
-	\item Computar $P = sW' = (x_P, y_P)$. $x_P$ será considerado o segredo compartilhado.
+	\item Cada uma das partes escolhe um número inteiro aleatório $s$ no intervalo $[1, r-1]$ e computa o ponto $W = sG$. $s$ e $W$ são chamados de chave pública e privada, respectivamente.
+	\item Obter da outra parte a chave pública dela, $W'$.
+	\item Cara parte pode computar $P = sW' = (x_P, y_P)$. $x_P$ será considerado o segredo compartilhado.
 	\item Aplicar uma função de derivação de chave sobre $x_P$.
 \end{enumerate}
 
@@ -417,6 +424,12 @@ Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição~\ref{d
 \chapter{Trabalhos Correlatos}
 \label{ch:correlatos}
 
+As primeiras publicações as quais investigaram a performance de sistemas de criptografia baseados em curvas elípticas possuiam um grande enfoque em tempo de execução. Em~\cite{Hankerson}, realizou-se um levantamento extensivo de diversas implementações para as operações aritméticas em $GF(2^m)$, assim como algoritmos para multiplicação por escalar em curvas, e o tempo de execução em um processador de desktop da época foi reportado.~\cite{Aydos} apresentaram uma biblioteca para um processador ARM de 32 bits com operações para curvas em $GF(p)$, reportando tempo de execução para o ECDSA (\ingles{Elliptic Curve Digistal Signature Algorithm}), o qual utiliza as mesmas primitivas que ECDH.
+
+O trabalho de~\cite{Bartolini}, a partir do simulador Superscalar para a arquitetura ARM, foi o primeiro a reportar dados do comportamento do sistema de memória para algoritmos de ECC, embora para uma única configuração de cache. Além disso, encontram-se dados sobre CPI e tempo de execução por procedimento do algoritmo, bem como a proposta de uma instrução para multiplicação de polinomiais e o impacto que isso teria no algoritmo. Tal proposta é interessante visto que, anos depois, o conjunto de instruções ARMv8 trouxe uma instrução similar, embora não se encontrou nenhuma técnica utilizando ela na prática.
+
+Em uma continuação desse trabalho,~\cite{Branovic} realizaran uma análise da distribuição dos tipos de instrução executadas pelo algoritmo, onde pode-se observar que instruções de ALU totalizam $60\%$ do total de executadas (figura~\ref{fig:instruction_classes}), resultado confirmado pelos trabalhos de~\cite{Gouvea} e~\cite{Gura}. Outra contribuição consiste na comparação do \ingles{miss rate} entre algoritmos simétricos e assimétricos, onde pode-se observar que os algoritmos de ECC são muito menos intensivos na cache de dados quando comparados ao AES, embora detalhes da implementação deste não sejam reportados. Além disso, a diferença entre o \ingles{miss rate} na cache de dados e na de instruções chega a uma ordem de magnitude, conforme a figura~\ref{fig:cache_ecc_aes}.
+
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[scale=0.40]{images/instruction_classes.png}
@@ -424,6 +437,8 @@ Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição~\ref{d
 \label{fig:instruction_classes}
 \end{center}
 \end{figure}
+
+Outro conjunto de trabalhos passa a focar em processadores utilizados em sensores, como~\cite{Gura}, o qual comparou o tempo de execução, uso de memória e tamanho do código para os algoritmos RSA e ECC em um ATmega128. As conclusões apresentadas em tal trabalho indicam que os algoritmos baseados em RSA podem ser até uma ordem de magnitude mais lentos, embora espere-se que essa diferença seja menor para processadores com tamanho de palavra maior. Uma implementação detalhada para plataforma de sensores MICA, a qual utiliza o processador ATmega128, é descrita em~\cite{Wang}, embora não sejam informados dados de eficiência enérgica. Um trabalho por~\cite{Gouvea} compara esquemas de ECC com esquemas baseados em identidades e pareamentos, onde conclui-se que os primeiros possuem um desempenho superior. Uma segunda contribuição do trabalho consiste em demonstrar a importância do uso apropriado de otimizações voltadas a arquitetura alvo, visto que os autores foram os primeiros a considerar a instrução de \ingles{multiply and accumulate} do processador MSP430 ao desenvolverem sua implementação. Nessa mesma plataforma,~\cite{Mane} reporta o consumo energético ao variar-se a frequência operada bem como a presença de multiplicador em hardware, atributo o qual não está presente em todas as versões do MSP430.
 
 \begin{figure}[ht]
 \begin{center}
@@ -433,13 +448,6 @@ Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição~\ref{d
 \end{center}
 \end{figure}
 
-As primeiras publicações as quais investigaram a performance de sistemas de criptografia baseados em curvas elípticas possuiam um grande enfoque em tempo de execução. Em~\cite{Hankerson}, realizou-se um levantamento extensivo de diversas implementações para as operações aritméticas em $GF(2^m)$, assim como algoritmos para multiplicação por escalar em curvas, e o tempo de execução em um processador de desktop da época foi reportado.~\cite{Aydos} apresentaram uma biblioteca para um processador ARM de 32 bits com operações para curvas em $GF(p)$, reportando tempo de execução para o ECDSA (\ingles{Elliptic Curve Digistal Signature Algorithm}), o qual utiliza as mesmas primitivas que ECDH.
-
-O trabalho de~\cite{Bartolini}, a partir do simulador Superscalar para a arquitetura ARM, foi o primeiro a reportar dados do comportamento do sistema de memória para algoritmos de ECC, embora para uma única configuração de cache. Além disso, encontram-se dados sobre CPI e tempo de execução por procedimento do algoritmo, bem como a proposta de uma instrução para multiplicação de polinomiais e o impacto que isso teria no algoritmo. Tal proposta é interessante visto que, anos depois, o conjunto de instruções ARMv8 trouxe uma instrução similar, embora não se encontrou nenhuma técnica utilizando ela na prática.
-
-Em uma continuação desse trabalho,~\cite{Branovic} realizaran uma análise da distribuição dos tipos de instrução executadas pelo algoritmo, onde pode-se observar que instruções de ALU totalizam $60\%$ do total de executadas (figura~\ref{fig:instruction_classes}), resultado confirmado pelos trabalhos de~\cite{Gouvea} e~\cite{Gura}. Outra contribuição consiste na comparação do \ingles{miss rate} entre algoritmos simétricos e assimétricos, onde pode-se observar que os algoritmos de ECC são muito menos intensivos na cache de dados quando comparados ao AES, embora detalhes da implementação deste não sejam reportados. Além disso, a diferença entre o \ingles{miss rate} na cache de dados e na de instruções chega a uma ordem de magnitude, conforme a figura~\ref{fig:cache_ecc_aes}.
-
-Outro conjunto de trabalhos passa a focar em processadores utilizados em sensores, como~\cite{Gura}, o qual comparou o tempo de execução, uso de memória e tamanho do código para os algoritmos RSA e ECC em um ATmega128. As conclusões apresentadas em tal trabalho indicam que os algoritmos baseados em RSA podem ser até uma ordem de magnitude mais lentos, embora espere-se que essa diferença seja menor para processadores com tamanho de palavra maior. Uma implementação detalhada para plataforma de sensores MICA, a qual utiliza o processador ATmega128, é descrita em~\cite{Wang}, embora não sejam informados dados de eficiência enérgica. Um trabalho por~\cite{Gouvea} compara esquemas de ECC com esquemas baseados em identidades e pareamentos, onde conclui-se que os primeiros possuem um desempenho superior. Uma segunda contribuição do trabalho consiste em demonstrar a importância do uso apropriado de otimizações voltadas a arquitetura alvo, visto que os autores foram os primeiros a considerar a instrução de \ingles{multiply and accumulate} do processador MSP430 ao desenvolverem sua implementação. Nessa mesma plataforma,~\cite{Mane} reporta o consumo energético ao variar-se a frequência operada bem como a presença de multiplicador em hardware, atributo o qual não está presente em todas as versões do MSP430.
 
 Quatro anos após a prova em silício de que algoritmos de ECC podem ser utilizados em RFID~\cite{Hein:2009}, apresentou-se uma implementação em software para a plataforma RFID conhecida como WISP~\cite{Pelnar}. Neste trabalho, apenas a menor curva padronizada pelo NIST é utilizada, reportando tempo de execução de 1.6 segundos para multiplicação de um ponto da curva por um escalar.
 
