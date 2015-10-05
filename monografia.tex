@@ -92,12 +92,13 @@
 % Elementos textuais
 
 \chapter{Introdução}
+\label{ch:intro}
 
 Com a expansão da internet, não apenas servidores e \ingles{desktops} passam a fazer parte da rede, mas também um grande número de pequenos dispositivos como PDAs, celulares e sensores. Acoplados aos processadores de tais equipamentos, encontram-se transmissores de rádio que permitem a comunicação com outros dispositivos, estejam eles em uma rede local ou à longa distância conectados por algum \ingles{gateway}. Alguns problemas em comum podem ser encontrados nesses dispositivos, como limitações na capacidade de processamento, quantidade de memória e disponibilidade de bateria, além de estarem potencialmente expostos a diversos usuários maliciosos. O desafio, então, surge ao observar-se que a solução para a última deficiência entra diretamente em conflito com as primeiras.
 
 Os protocolos utilizados para comunicação segura, sejam eles aqueles utilizados por browsers (como o TLS), por terminais (como o SSH) ou até mesmo em aplicações da internet das coisas (como~\cite{Resner:SENSORNETS:2015}), dependem de duas grandes classes de algoritmos criptográficos: os simétricos e os assimétricos. Embora as mensagens sejam cifradas com algoritmos simétricos, como o AES, o esbelecimento de um canal seguro é, de modo geral, iniciado com o uso da classe assimétrica, a qual permite a definição de um chave secreta conhecida apenas pelos participantes da conversa. Essa chave passa a ser utilizada pelo resto da sessão segura em algoritmos simétricos.
 
-De modo geral, observa-se que algoritmos simétricos possuem implementações extremamente simples, podendo ser otimizados para diferentes configurações de processadores. É o caso do \ingles{Rijndael}~\cite{daemen1999aes}, vencedor da competição que elegeu o \ingles{Advanced Encryption Standard} (AES), cuja implementação pode ser feita executando-se operações matemáticas ou com o uso de \ingles{look-up tables} que variam de tamanho: 256 bytes, 1KB ou 4KB\@. Desse modo, permite-se a execução do AES em processadores com diferentes configurações de memória. Tamanha flexibilidade não ocorre por acaso: o algoritmo foi desenvolvido com esse objetivo, visto que a competição incluiu critérios como quantidade de memória requerida, eficiência computacional e simplicidade para avaliação dos candidatos~\cite{nechvatal2000report}.
+De modo geral, observa-se que algoritmos simétricos possuem implementações extremamente simples, podendo ser otimizados para diferentes configurações de processadores. É o caso do \ingles{Rijndael}~\cite{daemen1999aes}, vencedor da competição que elegeu o \ingles{Advanced Encryption Standard} (AES), cuja implementação pode ser feita executando-se operações matemáticas ou com o uso de \ingles{look-up tables} que variam de tamanho: 256 bytes, 1kB ou 4kB\@. Desse modo, permite-se a execução do AES em processadores com diferentes configurações de memória. Tamanha flexibilidade não ocorre por acaso: o algoritmo foi desenvolvido com esse objetivo, visto que a competição incluiu critérios como quantidade de memória requerida, eficiência computacional e simplicidade para avaliação dos candidatos~\cite{nechvatal2000report}.
 
 Por outro lado, os algoritmos assimétricos possuem implementações complexas pela natureza do problema com que lidam: muitos deles estão associados ao uso de conjecturas da Teoria dos Números sob domínios de ordem muito grande, isto é, trabalham com conjuntos cuja cardinaliade precisa de centenas ou até milhares de bits para ser representada. Um dos algoritmos mais famosos dessa classe, o RSA, é baseado na dificuldade da fatoração de inteiros e trabalha com números na ordem de 1024 bits. Pode-se perceber, então, um dos possíveis inconvenientes que esse algoritmo traz: a aritmética de números desse tamanho não é trivial de ser implementada, principalmente se considerarmos que processadores utilizados em, por exemplo, redes de sensores trabalham com registradores de 8 ou 16 bits\footnote{É o caso do \ingles{Atmel ATmega} (8 bits) ou do \ingles{Texas Instruments MSP430} (16 bits)}.
 
@@ -117,7 +118,7 @@ ECC             & RSA             \\ \hline
 \label{tab:RSAxECC}
 \end{table}
 
-Apesar de os algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação eficiente de criptografia de chaves públicas em ambientes com recursos limitados necessitou de muitos esforços da academia, conforme relatado por~\cite {Wenger:2013}. Tamanho investimento é justificado pelo crescente número de aplicações que executam em tais ambientes, como \ingles{smart cards}, redes de sensores sem fio ou etiquetas RFID\@. Para o caso de redes de sensores com processadores de 8 bits, apenas em 2004 demonstrou-se a viabilidade do uso de algoritmos de ECC em tais plataformas~\cite{first8bits:Gura}. De modo similar, a primeira implementação em hardware com consumo energético baixo o suficiente para ser alimentado passivamente foi demonstrada em 2008~\cite{Hein:2009}. Atualmente, diversos dispositivos médicos, como marcapassos, são configurados através de um canal sem fio e possuem longevidade de 5 a 15 anos. Nesse cenário, algoritmos de curvas elípticas são empregados por proverem a seguraça e eficiência necessárias~\cite{fan2013low}.
+Apesar de os algoritmos de ECC possibilitarem uma redução no tamanho das chaves, a implementação eficiente de criptografia de chaves públicas em ambientes com recursos limitados necessitou de muitos esforços da academia, conforme relatado por~\cite {Wenger}. Tamanho investimento é justificado pelo crescente número de aplicações que executam em tais ambientes, como \ingles{smart cards}, redes de sensores sem fio ou etiquetas RFID\@. Para o caso de redes de sensores com processadores de 8 bits, apenas em 2004 demonstrou-se a viabilidade do uso de algoritmos de ECC em tais plataformas~\cite{Gura}. De modo similar, a primeira implementação em hardware com consumo energético baixo o suficiente para ser alimentado passivamente foi demonstrada em 2008~\cite{Hein:2009}. Atualmente, diversos dispositivos médicos, como marcapassos, são configurados através de um canal sem fio e possuem longevidade de 5 a 15 anos. Nesse cenário, algoritmos de curvas elípticas são empregados por proverem a seguraça e eficiência necessárias~\cite{fan2013low}.
 
 
 \section{Motivação e trabalho proposto}
@@ -403,6 +404,7 @@ Em termos de um problema computacional, a formulação mais tradicional é dada a s
 O algoritmo ingênuo para resolver uma instância de ECDLP consiste em computar os múltiplos de $P$ (isto é, os membros de $\langle P \rangle$) até que se encontre $Q$, o que pode levar até $n$ adições, impraticável para valores muito altos de $n$. Atualmente, os melhores algoritmos conhecidos são baseados em variações do método \ingles{Pollard's $\rho$} e executam em tempo $O(\sqrt{n})$~\cite{Pollard1}\cite{Pollard2}.
 
 \section{\ingles{Elliptic Curve Diffie Hellman}}
+\label{ch:DH}
 O leitor deve lembrar o cenário em que a seção~\ref{sec:secure_sessions} foi encerrada: $A$ e $B$ conseguem se comunicar de modo seguro dado que possuam uma chave secreta em comum. É exatamente esta pré-condição que será discutida a seguir, e não deve causar surpresa que o uso do ECDLP será crucial nessa tarefa.
 
 Em 1976,  Whitfield Diffie e Martin Hellman publicaram um método para a troca de chaves em um canal inseguro~\cite{DiffieHellman} o qual é baseado no problema do logaritmo discreto de inteiros em $GF(p)$. Embora não forneça autenticação (isto é, $A$ não possui garantias de que está de fato conversando com $B$\footnote{Nenhum dos protocolos apresentados aqui possuirá essa característica, visto que é algo difícil de ser alcançado sem uma Infraestrutura de Chaves Públicas (\ingles{Public Key Infrastructure}) previamente estabelecida. Atualmente, isto é feito através de certificados e autoridades certificadoras. Ainda assim, tais protocolos são realistas e são utilizados em versões autenticadas dos mesmos.}), ele é a base de protocolos com autenticação. Pouco tempo depois, em 1978, a dificuldade da fatoração de números inteiros foi utilizada por R.L. Rivest, A. Shamir, e L. Adleman para atingir o mesmo propósito, no algoritmo conhecido como $RSA$~\cite{Rivest:1978:MOD:359340.359342}. Em 1985, dois autores propuseram independentemente o uso de curvas elípticas para a troca de chaves (\cite{koblitz1987elliptic},~\cite{Miller}) com tais métodos se popularizando a partir de 2004\footnote{Mais recentemente, as pesquisas em algoritmos baseados em Retículos (\ingles{Lattices}) ressurgiram, visto que essa é uma classe de algoritmos resistentes a ataques por computadores quânticos, ao contrário daqueles baseados em Diffie-Hellman e RSA. }.
@@ -424,7 +426,7 @@ Ao receber de $B$ o valor $W'$, $A$ pode utilizar o critério da definição~\ref{d
 \chapter{Trabalhos Correlatos}
 \label{ch:correlatos}
 
-Os trabalhos relacionados a investigar a viabilidade e a eficiência energética de algoritmos de ECC podem ser divididos em dois grandes conjuntos: os voltados a processadores com cache e os voltados a processadores em cache. Tais conjuntos são os temas dos capítulos~\ref{ch:com_cache} e~\ref{ch:sem_cache}.
+Os trabalhos relacionados a investigar a viabilidade e a eficiência energética de algoritmos de ECC podem ser divididos em dois grandes conjuntos: os voltados a processadores com cache e os voltados a processadores sem cache. Tais conjuntos são os temas dos capítulos~\ref{ch:com_cache} e~\ref{ch:sem_cache}.
 
 \section{Trabalhos voltados a processadores com cache}
 \label{ch:com_cache}
@@ -460,20 +462,145 @@ Outro conjunto de trabalhos passa a focar em processadores utilizados em sensore
 
 Quatro anos após a prova em silício de que algoritmos de ECC podem ser utilizados em RFID~\cite{Hein:2009}, apresentou-se uma implementação em software para a plataforma RFID conhecida como WISP~\cite{Pelnar}. Neste trabalho, apenas a menor curva padronizada pelo NIST é utilizada, reportando tempo de execução de 1.6 segundos para multiplicação de um ponto da curva por um escalar.
 
-O trabalho de~\cite{deClerc} avalia o uso de curvas elípticas com o recém lançado processador Cortex M0+ da ARM (32 bits), propondo um novo algoritmo para multiplicação em $GF(q)$. Além disso, o custo enérgico de cada instrução executada pelo processador é avaliado e o desempenho dos algoritmos criptográficos calculado com base em tais valores. Infelizmente, o trabalho se concentra em curvas especiais e não naquelas padronizadas. De modo similar,~\cite{Liu} explora duas formas especiais de curvas elípticas (\ingles{Montgomery} e \ingles{Twisted Edwards}) bem como a equivalência existente entre elas para diminuir o custo das operações de grupo. A importância do uso de curvas padronizadas é discutida em~\cite{Wenger}, onde os autores desenvolvem clones VHDL (precisos em ciclo) dos processadores ATmega128, MSP430 e Cortex M0+ e simulam o uso de tais curvas. Destaca-se que o processador ARM alcança a melhor eficiência energética e tempo de execução enquanto o MSP430 ocupa a menor área em silício e demanda a menor potência. Por fim, deve-se mencionar que o estado da arte em termos de velocidade encontra-se no trabalho publicado por~\cite{Liu2}, o qual, embora não utilize curvas padronizadas, afirma trabalhar sobre um corpo finito mais compatível com outras implementações de ECC.
+O trabalho de~\cite{deClerc} avalia o uso de curvas elípticas com o recém lançado processador Cortex M0+ da ARM (32 bits), propondo um novo algoritmo para multiplicação em $GF(q)$. Além disso, o custo enérgico de cada instrução executada pelo processador é avaliado e o desempenho dos algoritmos criptográficos calculado com base em tais valores. Infelizmente, o trabalho se concentra em curvas especiais e não naquelas padronizadas. De modo similar,~\cite{Liu} explora duas formas especiais de curvas elípticas (\ingles{Montgomery} e \ingles{Twisted Edwards}) bem como a equivalência existente entre elas para diminuir o custo das operações de grupo. A importância do uso de curvas padronizadas é discutida em~\cite{Wenger}, onde os autores desenvolvem clones VHDL (precisos em ciclo) dos processadores ATmega128, MSP430 e Cortex M0+ e simulam o uso de tais curvas. Destaca-se que o processador ARM alcança a melhor eficiência energética e tempo de execução enquanto o MSP430 ocupa a menor área em silício e demanda a menor potência. Por fim, deve-se mencionar que o estado da arte em termos de velocidade encontra-se no trabalho publicado por~\cite{Liu}, o qual, embora não utilize curvas padronizadas, afirma trabalhar sobre um corpo finito mais compatível com outras implementações de ECC.
 
 \section{Discussão}
+\label{ch:discussao}
 
 A julgar pela literatura, há duas possibilidades abertas para um trabalho sobre o uso energeticamente eficiente de memória em algoritmos baseados em curvas elípticas: 1)Criptografia em dispositivos pessoais móveis (que utilizam processadores com caches, e.g. ARMv7/ARMv8); 2) Criptografia em redes de sensores (que utilizam microcontroladores sem caches, e.g. ATMega). A segunda opção tem foco na codificação eficiente dos algoritmos e no uso de scratchpads. O desafio está na viabilidade das curvas elípticas quando se usam pequenos processadores, sobretudo em face dos requisitos da Internet of Things. Por outro lado, a segunda opção abre a possibilidade de investigar técnicas de compilação para otimização do uso energeticamente eficiente do subsistema de memória. O desafio reside em se reduzir o consumo em memória para algoritmos que possuem uma taxa de faltas já bastante pequena quando comparada à observada para os algoritmos simétricos. Este trabalho adota a primeira opção, em função do interesse em técnicas de compilação para otimização do uso de memória e também porque é para a segunda opção que se dispõe, no momento, de infraestrutura experimental adequada.
 
 Ao se fazer esta opção, os resultados da Figura 7 sugerem que este trabalho tenha seu foco na otimização da cache de instruções, devido ao seu maior impacto potencial na redução do consumo energético em memória principal.
 
-%\chapter{Experimentos realizados}
-%\label{ch:experimentos}
-%\chapter{Conclusões e trabalhos futuros}
-%\label{ch:conclusao}
+\chapter{Avaliação experimental de curvas elípticas}
+
+A infraestrutura experimental desenvolvida consiste na escolha de: uma implementação das primitivas de curvas elípticas, um protocolo baseado em ECC para ser executado, uma plataforma alvo, um simulador para tal plataforma e uma ferramenta capaz de fornecer dados energéticos relacionados ao sistema de memórias. Este capítulo é iniciado com o detalhamento e justificava de cada uma de tais escolhidas e, em seguida, apresenta-se os resultados experimentais obtidos bem como uma análise do comportamento do sistema de memórias e o seu impacto na eficiência energética dos algoritmos.
+
+\section{Modelagem e estimativa energética}
+Para obter-se dados quantitativos sobre o número de acessos a cada nível de memória, bem como as taxas de acerto em cada um deles, utilizou-se o framework de simulação GEM5~\cite{gem5}. Com suporte a diversos \ingles{Instruction Set Architectures} (ISA) e sistemas de memória, o GEM5 faz parte de uma iniciativa conjunta entre academia e indústria para o desenvolvimento de uma ferramenta capaz de simular a execução de um programa compilado para uma arquitetura desejada. Com base nisso, o programa teste foi executado através do simulador e, para cada nível de memória, foram coletados dados referentes ao número de leituras ($n_L$), de escritas ($n_W$), acertos e falhas. Além disso, foram coletadas informações relativas ao número de ciclos executados, ou o tempo total de execução do programa ($t$).
+
+De modo a construir uma caracterização energética dos algoritmos de ECC, são necessárias dados sobre o custo de cada uma das operações em memória, i.e., o custo de um leitura ($c_L$), uma escrita ($c_W$) e o gasto estático ($P$). Para tal, utilizou-se a ferramenta CACTI~\cite{cacti}. Deste modo, o custo energético $C_M$ de um componente $M$ do sistema de memórias pode ser modelado por:
+\[C_M = n_L * c_L + n_W + c_W + t * P\]
+
+\section{Domínio de aplicação, aplicação específica e classes de processadores}
+
+\subsection{Algoritmos criptográficos}
+Por ser de código aberto, utilizada tanto por indústria quanto academia e considerada segura, a biblioteca \ingles{OpenSSL}\footnote{Preferiu-se, quando possível, utilizar um \ingles{fork} do OpenSSL chamado BoringSSl, o qual simplificou consideravelmente a biblioteca e atualmente é mantido pela Google, sendo utilizado, por exemplo, no navegador \ingles{Chrome}} foi adotada neste trabalho para fornecer a implementação das operações de curvas elípticas e de \ingles{big numbers}. Por ser uma biblioteca extensa, apenas o código necessário à simulação foi compilado, sem suporte a \ingles{threads} e utilizou-se apenas código C, evitando-se otimizações escritas em \ingles{assembly}. O \ingles{cross-compiler} adotado foi o GCC versão 4.9 configurado pela ferramenta \ingles{Buildroot}.
+
+Para analisar a eficiência energética de algoritmos de curvas elípticas, o método baseado em Diffie-Hellman (conforme discutido no capítulo~\ref{ch:DH}) foi adotado. O programa desenvolvido executa os passos descritos em tal capítulo para ambas as partes, sem simular a troca de mensagens entre elas, efetivamente dobrando o número de operações executadas. Os parâmetros iniciais adotados, isto é, a curva e as constantes necessárias, são baseados em curvas padronizadas e amplamente utilizadas. Mais especificamente, as curvas P224, P256, P384 e P521~\cite{FIPS186} foram simuladas, sendo que o número referenciado no nome da curva indica o nível de segurança da mesma (i.e.\ o número de bits necessários para representar o primo associado).
+
+\subsection{Classe de processadores}
+Por estarem presentes em grande parte do mercado atual de sistemas embarcados, os processadores ARM foram adotados neste trabalho. Eles estão divididos em 3 grandes grupos: Cortex-A, Cortex-R e Cortex-M. Cada um possui diferenças consideráveis em seus respectivos sistemas de memória, fato o qual justifica uma breve discussão sobre os grupos neste capítulo. 
+
+Os processadores do tipo Cortex-A são empregados normalmente em aplicações de usuários ou aplicações que demandam alta performance. São capazes de operar tanto em 32 quanto 64 bits, e normalmente acompanhados de 3 níveis de memória: uma cache L1, uma L2 e memória principal de alguns GBs. O principal processador de dispositivos como tablets, smartphones e, mais recentemente, servidores é desse grupo.
+
+O grupo dos Cortex-R está focado em aplicações de tempo real, e estão um pouco abaixo dos Cortex-A em termos de perfomance. Nem sempre possuem unidades de ponto flutuante e suas caches são consideravelmente mais simples: caches L1 e uma memória principal entre 256kB e 512kB\@. Aplicações típicas incluem freios automotivos, modems, controladores para WiFi e 3g, entre outros.
+
+Por fim, a classe Cortex-M é caracterizada pelo baixo consumo de energia e é ideal para microcontroladores e sensores. Seu sistema de memória é bem mais simples que os dois anteriores, normalmente não possuem caches e sua memória tem capacidade muito inferior, em torno de 128kB\@. 
+
+Neste trabalho, as configurações de memória foram escolhidas de modo a serem similares àquelas presentes em processadores do tipo Cortex-R. Essa escolha é justificada pela presença dos mesmos em diversos dispositivos móveis atuais, como no hardware de banda base de celulares, e por possuírem segurança como uma das aplicações alvo. Além disso, seu sistema de memória oferece um balanço interessante entre a complexidade da categoria Cortex-A e a simplicidade de um Cortex-M. Todas as justificativas citadas estão de acordo com a discussão realizada no capítulo~\ref{ch:discussao}.
+
+\section{Avaliação experimental compatível com Cortex-R}
+\subsection{Configuração experimental da memória}
+
+Com base na análise de diversas implementações dos processadores Cortex-R disponíveis no mercado, parâmetros de memória condizentes foram escolhidos. Deste modo, optou-se por um sistema de memória de dois níveis: uma memória principal com 512kB e duas caches L1 (uma para instruções e uma para dados) com tamanho variando entre \{1kB, 2kB, 4kB, 8kB, 16kB\} e \ingles{2-way associative}. 
+
+A ferramenta CACTI foi configurada para utilizar o modelo UCA (\ingles{Uniform Cache Access}), a tecnologia itrs-lstp (\ingles{Low Standby Power}), tamanho de bloco de 32 bytes para as duas menores caches e 64 bytes nas demais. Todos os resultados são reportados para 32nm, exceto onde explicitamente especificado. O simulador Gem5 foi utilizado com o modelo ``arm-detailed'' e modelo de memória `` simple''.
+
+\subsection{Avaliação do desempenho em cache}
+A análise da taxa de faltas nas caches de dados e de instruções oferece um panorama do comportamento do sistema de memórias durante a execução dos algoritmos de ECC\@.
+
+Da figura~\ref{fig:missrate_dcache} pode-se concluir que a taxa de faltas é muito baixa para todas as curvas, sendo que, com uma cache de apenas 4kB, esse valor é inferior a 1\%. Além disso, o parâmetro de segurança não causa grande impacto na cache dados, o que é esperado: a diferença entre o espaço necessário para armazenar pontos em P224 e P521 é muito pequena. Tal observação ilustra uma das vantagens de ECC sobre o algoritmo RSA, este último trabalha com números muito maiores para um mesmo nivel de segurança, conforme discutido no capítulo~\ref{ch:intro}.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_miss_rate_dcache.png}
+\caption{Taxa de falta na cache de dados}
+\label{fig:missrate_dcache}
+\end{center}
+\end{figure}
+
+A cache de instruções, no entanto, possui um comportamento muito mais interessante e muito mais faltas que a de dados. A figura~\ref{fig:missrate_icache} revela que as duas maiores curvas (P521 e P384) possuem a menor taxa de faltas em todos os tamanhos de cache, sugerindo, então, que o aumento do parâmetro de segurança implica um maior número de iterações de um ponto do código com um melhor comportamento em cache. 
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_miss_rate_icache.png}
+\caption{Taxa de falta na cache de instruções}
+\label{fig:missrate_icache}
+\end{center}
+\end{figure}
+
+Uma análise com a ferramenta Valgrind parece confirmar essa hipótese. Para a curva P256, a rotina com mais acessos na cache de instruções foi responsável por 7 milhões de leituras das quais 74 mil foram faltas,  enquanto em P521 foram 75 milhões de leituras e 240 mil faltas. Ou seja, um aumento de 10x no número de acessos foi acompanhado de um aumento de 3x no número de faltas. Já segunda função com mais referências produziu 3.5 milhões e 378 mil acessos e falhas, respectivamente, em P256 enquanto em P521 foram 41 milhões e 4.4 milhões respectivamente. Ou seja, nessa segunda rotina houve um aumento de 10x tanto em leituras quanto em faltas. Isso parece sugerir que, durante as chamadas à primeira rotina, seu código já se encontrava em cache. Os números parecem apontar que o mesmo não deve ser válido para a segunda, podendo ser um alvo interessante para uma otimização como prefetching.
+
+\subsection{Avaliação do consumo em memória}
+    
+A partir da figura~\ref{fig:total_energy}, pode-se concluir que o parâmetro de segurança tem um impacto muito grande no custo energético total dos algoritmos, mesmo embora as maiores curvas tenham as melhores taxas de faltas na cache de instruções. Esse elevado custo fica mais acentuado nas maiores caches, onde as taxas de faltas de todas as curvas são praticamente idênticas. Observa-se, também, que as menores curvas mantêm uma mesma eficiência energética para todos os tamanhos de cache, o que não é verdade para as duas maiores. Isso pode ser explicado novamente pela figura~\ref{fig:missrate_icache}, visto que as menores curvas se beneficiam mais do aumento da cache. Tais observações são interessantes pois mostram que, para P224 e P256, o gasto energético total independe (ou depende muito pouco) do tamanho das caches.
 
 
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_total_energy_simple.png}
+\caption{Energia total consumida pelo sistema de memória}
+\label{fig:total_energy}
+\end{center}
+\end{figure}
+
+Para viabilizar uma análise de quais componentes têm o maior impacto no custo energético, a figura~\ref{fig:total_energy_bars} divide, para P224, os componentes de energia entre: energia total na cache de dados, energia total na cache de instruções, energia da memória principal devido acessos à instruções, energia da memória principal devido a dados e energia estática em memória principal. É possível perceber que, embora as parcelas relativas às duas caches sejam similares, grande parte do uso da memória principal vem de acessos à instruções, novamente um indicativo de que a cache de instruções é um alvo importante para otimizações. Além disso, muito embora tenha-se concluido anteriormente que o custo total dos algoritmos para P224 independa do tamanho da cache, uma eventual otimização teria impacto maior nas menores caches, visto que apenas nelas seria possível melhorar consideravelmente a taxa de faltas. Aliado à esse fato, ganha-se em energia estática ao utilizar-se uma cache menor.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_total_energy_stacked_bars_p224.png}
+\caption{Energia total separada em componentes para a curva P224}
+\label{fig:total_energy_bars}
+\end{center}
+\end{figure}
+
+O uso de diferentes tecnologias também possui um impacto a ser considerado, conforme exibido na figura~\ref{fig:total_energy_tech}. Em todas as curvas existe uma diferença de uma ordem de magnitude ao comparar-se as tecnologias de 32nm e 90nm, ou seja, o desenvolvimento de qualquer dispositivo com restrições energética deve começar com a escolha adequada desse parâmetro. Para explicar a maior taxa de crescimento das curvas P521 e P384, é necessário observar que tanto o custo de um acesso quanto o custo estático crescem conforme o nodo tecnológico aumenta. Conforme a figura~\ref{fig:total_accesses} mostra, o número de acessos em memória não cresce linearmente com o parâmetro de segurança, portanto é esperado que a tecnologia tenha um impacto maior nas maiores curvas.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_technology.png}
+\caption{Energia total em diferentes tecnologias e curvas}
+\label{fig:total_energy_tech}
+\end{center}
+\end{figure}  
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_num_accesses_per_curve.png}
+\caption{Número de acessos à memória por curva}
+\label{fig:total_accesses}
+\end{center}
+\end{figure}  
+
+\subsection{Avaliação da eficiência energética em memória}
+
+A eficiência energética de cada uma das combinações de curva e tamanho de cache é exibida na figura~\ref{fig:efficiency}, a qual está de acordo com todos os resultados obtidos. Nota-se novamente que as maiores curvas operam no maior número de operações por nJ, muito embora seu custo total seja muito acima das demais. O gráfico obtido traça um paralelo direto com aquele exibido na figura~\ref{fig:total_energy}: o pico de eficiência acontece nas caches de 2kB ou 4kB. Essa afirmação considera que o número de acessos em memória permanece inalterado ao variar-se o tamanho da cache, o que não é verdade, porém uma aproximação razoável conforme a figura~\ref{fig:total_accesses_caches} comprova.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_energy_efficiency_opj.png}
+\caption{Eficiência energética em número de acessos em memória por nJ}
+\label{fig:efficiency}
+\end{center}
+\end{figure}  
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.55]{images/graph_num_accesses_per_cache.png}
+\caption{Número de acessos à memória variando-se o tamanho da cache}
+\label{fig:total_accesses_caches}
+\end{center}
+\end{figure}  
+
+
+
+\subsection{Conclusões}
+
+O problema de como trabalhar com criptografia de curvas elípticas em hardware com recursos limitados já foi amplamente estudado na literatura. Porém muitos dos esforços encontram-se em otimizações matemáticas, no método de representação dos elementos de grupo, na escolha da curva ou na escolha do melhor algoritmo para cada operação envolvida no ECDH\@. Com este trabalho foi possível realizar uma abordagem diferente para o problema: fixando-se os parâmetros citados previamente através do uso de uma biblioteca conhecida e genérica, identificar novos pontos passíveis de otimização.
+
+A partir da análise de um parâmetro simples como a taxa de faltas nas caches, foi possível mapear quais aspectos do algoritmo poderiam ser investigados em maior detalhe. De um lado, a cache de dados, muito embora represente uma parcela considerável da energia total, possue um comportamento difícil de ser melhorado visto que possui baixas taxas de falta. No outro, a cache de instruções aparece como a maior fatia do consumo de energia e, ao mesmo tempo, com altas taxas de faltas. Além disso, o fato de que as maiores curvas possuem menores taxas de faltas levam-nos a desconfiar de que, dentre os trechos de código mais executados, alguns podem um comportamento muito melhor que os demais. Ao comparar-se a menor e a maior curva, essa hipótese foi reforçada, sendo possível identificar um trecho responsável por um número maior de faltas que os demais.
+
+Já a observação da energia total gasta em cada uma das curvas permitiu identificar que, para algumas, o custo energético total é quase invariante com o tamanho da cache, porém a distribuição das parcelas é muito diferente para cada tamanho. Isso abre espaço para combinar dois possíveis fatores positivos: utilizar menos recursos (tamanho menor de cache) e, ao mesmo tempo, investir em uma técnica que diminua o número de faltas na mesma. Tal técnica pode ser aplicada exatamente nos pontos identificados anteriormente.
 
 \bibliographystyle{ufscThesis/ufsc-alf}
 \bibliography{bibliografia}
