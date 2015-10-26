@@ -345,7 +345,7 @@
        \rightskip 1.6em
        \parfillskip -\rightskip
        \parindent 0em
-       \@tempdima 3em
+       \@tempdima 6.3em %FELIPE: mudar aqui pra ter mais espaco na lista de simbolos
        \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
        {\normalfont #1}\nobreak \filltocentry{#2}}
 
@@ -367,10 +367,10 @@
 %---------------------------------------------------------------------------
 % Apêndices e Anexos - Pós-Textuais
 \addto\captionsbrazil{
-\renewcommand{\bibname}{REFERÊNCIAS}
+\renewcommand{\bibname}{REFER\^ENCIAS}
 }
 \addto\captionsbrazil{
-\renewcommand\refname{REFERÊNCIAS}
+\renewcommand\refname{REFER\^ENCIAS}
 }
 
 \renewenvironment{thebibliography}[1]%
@@ -827,8 +827,6 @@
 \end{espacosimples}
 
 
- {\setlength{\parindent}{0cm} \bfseries Banca Examinadora:\par}  
-
 \ABNTifnotempty{\ABNTorientadordata}
     {
     \ifthenelse{\equal{\orientadorbancadata}{nao}}
@@ -860,21 +858,21 @@
 
 
 
+ {\setlength{\parindent}{0cm} \bfseries Banca Examinadora:\par}  
 
-
-% \ABNTifnotempty{\ABNTorientadordata}
-%     {
-%     \ifthenelse{\equal{\orientadorbancadata}{sim}}
-% 	{
-% 	\begin{espacosimples}
-% 	    \vspace{0.5em}
-% 	    \begin{center}
-% 	    {\rule{\ABNTsignwidth}{1pt}\par
-% 	     \bancaformat \ABNTorientadorname \\ \ABNTorientadordata\par}
-% 	    \end{center}
-% 	\end{espacosimples}
-% 	}{}
-%     }
+ \ABNTifnotempty{\ABNTorientadordata}
+     {
+     \ifthenelse{\equal{\orientadorbancadata}{sim}}
+ 	{
+ 	\begin{espacosimples}
+ 	    \vspace{0.5em}
+ 	    \begin{center}
+ 	    {\rule{\ABNTsignwidth}{1pt}\par
+ 	     \bancaformat \ABNTorientadorname \\ \ABNTorientadordata\par}
+ 	    \end{center}
+ 	\end{espacosimples}
+ 	}{}
+     }
 \ABNTifnotempty{\ABNTcoorientadordata}
     {
     \ifthenelse{\equal{\coorientadorbancadata}{sim}}
@@ -929,7 +927,7 @@
 %\ifnum \nrobanca > 4
 \else
     {
-    \newpage
+    %\newpage
    
     \ABNTifnotempty{\bancanameA}
     {

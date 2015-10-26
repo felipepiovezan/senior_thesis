@@ -28,7 +28,7 @@
 \usepackage{subfigure}		% permite ter subfiguras
 \usepackage{indentfirst}	% indenta a primeira linha dos paragrafos
 \usepackage{remreset}		% reinicia contadores
-\usepackage{url}
+%\usepackage{url}
 
 %---------------------------------------------------------------------------
 % Pacote de bibliografia no padrão ABNT
@@ -41,7 +41,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%                                                         
 % Variáveis identificadoras do trabalho
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%                                                         
-% 
+
 %---------------------------------------------------------------------------
 % Instituicao
 \renewcommand{\ABNTinstituicaodata}{Universidade Federal de Santa Catarina}
@@ -69,8 +69,8 @@
 
 %---------------------------------------------------------------------------
 % Tipo do documento
-\providecommand{\UFSCdocumentodata}{Tese}
-\providecommand{\UFSCdocumentogenerodata}{a}
+\providecommand{\UFSCdocumentodata}{Trabalho de Conclusão de Curso}
+\providecommand{\UFSCdocumentogenerodata}{o}
 \newcommand{\documento}[2][a]%
     {\renewcommand{\UFSCdocumentodata}{#2} \renewcommand{\UFSCdocumentogenerodata}{#1} \detgenerodoc{#2}}
 
@@ -145,7 +145,7 @@
 
 \providecommand{\bancanameA}{}
 \providecommand{\bancadataA}{}
-\newcommand{\bancaMembroA}[2][]% se for incluir Presidente colocar [aqui]
+\newcommand{\bancaMembroA}[2][Presidente]% se for incluir Presidente colocar [aqui]
     {\renewcommand{\bancanameA}{#2}%
      \renewcommand{\bancadataA}{#1}}
 
@@ -187,16 +187,16 @@
 
 %---------------------------------------------------------------------------
 % Texto da folha de rosto
-\newcommand{\UFSCcomentariodata}{\UFSCdocumentodata\ submetid\UFSCdocumentogenerodata\ 
+\newcommand{\UFSCcomentariodata}{Monografia submetida 
  \aoa{\UFSCcursogenerodata}\ \UFSCcursodata\ para a obtenção do Grau de \graudata.}
 
 \renewcommand{\comentarioformat}{\small}
 
 %---------------------------------------------------------------------------
 % Texto da folha de aprovacao
-\newcommand{\textoAprovacaodata}{\esteEsta{\UFSCdocumentogenerodata} \UFSCdocumentodata\ 
-    foi julgad\UFSCdocumentogenerodata\ aprovad\UFSCdocumentogenerodata\ para a 
-    obten\c{c}\~ao do T\'itulo de ``\graudata'',  e aprovad\UFSCdocumentogenerodata\ 
+\newcommand{\textoAprovacaodata}{Esta Monografia  
+    foi julgada aprovada para a 
+    obten\c{c}\~ao do T\'itulo de ``\graudata'',  e aprovada 
     em sua forma final \peloPela{\UFSCcursogenerodata} \UFSCcursodata.} 
 
 % Resumo e abstract
